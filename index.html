@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<!--
+  A&H Lease Services Website
+
+  This single‑file site was handcrafted for A&H Lease Services, an oilfield
+  maintenance and lease services provider based in Longview, Texas.  The
+  layout is divided into logical sections (hero, services, calculators,
+  about, contact) and includes simple cost calculators to help visitors
+  estimate common project costs.  Colours, imagery and iconography were
+  chosen to reflect the company’s branding as seen in the provided flyers.
+
+  The page is fully responsive and requires no external dependencies.  All
+  styles and scripts are embedded so that the file can be deployed as‑is.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http‑equiv="X‑UA‑Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device‑width, initial‑scale=1.0">
+  <title>A&amp;H Lease Services – Oilfield Management &amp; Maintenance in Longview, TX</title>
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="A&H Lease Services provides comprehensive oilfield lease management, road and pad construction, mowing, weed spraying, hazardous spill cleanup, general dirt work and more across Longview, TX and the Ark‑La‑TX‑OK region.">
+  <meta name="keywords" content="Longview Texas oilfield services, lease road construction, pad construction, pipeline mowing, weed spraying, hazardous spill cleanup, dirt work, A&H Lease Services, oilfield maintenance">
+  <meta name="author" content="A&H Lease Services">
+  <style>
+    /* Global Styles */
+    :root {
+      --primary: #0b4f3c; /* dark teal green reminiscent of the flyers */
+      --secondary: #d4a200; /* golden accent used for highlights */
+      --light: #f9f9f9;
+      --dark: #1a1a1a;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      color: var(--dark);
+      background: var(--light);
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    /* Navigation */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--primary);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      letter-spacing: 0.05rem;
+    }
+    .navbar ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar li {
+      margin-left: 1.5rem;
+    }
+    .navbar a:hover {
+      color: var(--secondary);
+    }
+    /* Hero Section */
+    .hero {
+      /* Dark overlay on the background image ensures hero text remains legible even
+         when the source photograph contains its own content.  The first color
+         stop of the gradient adds a translucent layer on top of the photo. */
+      background: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)),
+                  /* Use the flyer artwork as a background and position it so that the text from the flyer is mostly cropped out. */
+                  url('assets/flyer.jpg') center top/cover no-repeat;
+      color: #fff;
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 4rem 2rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 600px;
+    }
+    .cta-btn {
+      margin-top: 1.5rem;
+      background: var(--secondary);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .cta-btn:hover {
+      background: #b38900;
+    }
+    /* Section Styles */
+    section {
+      padding: 4rem 2rem;
+    }
+    section h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      text-align: center;
+      color: var(--primary);
+    }
+    /* Services Section */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .service-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .service-card h3 {
+      margin-top: 0;
+      color: var(--primary);
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+    .service-card p {
+      flex-grow: 1;
+    }
+    .service-card .icon {
+      font-size: 2rem;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+    }
+    /* Calculator Section */
+    .calculator-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .calculator {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .calculator h3 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+    .calculator label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: bold;
+    }
+    .calculator input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .calculator button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+    }
+    .calculator button:hover {
+      background: #073a2c;
+    }
+    .calculator .result {
+      margin-top: 0.8rem;
+      font-weight: bold;
+      color: var(--secondary);
+    }
+    /* About Section */
+    .about-content {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+    /* Contact Section */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .contact-details {
+      font-size: 1rem;
+    }
+    .contact-form {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .contact-form label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: bold;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 0.8rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+    .contact-form button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+    }
+    .contact-form button:hover {
+      background: #073a2c;
+    }
+    footer {
+      background: var(--primary);
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
+    footer a {
+      color: var(--secondary);
+      text-decoration: underline;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .navbar ul {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .navbar li {
+        margin-left: 0;
+        margin-bottom: 0.5rem;
+      }
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" role="navigation">
+    <div class="logo">A&amp;H Lease Services</div>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#calculators">Calculators</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+  <!-- Hero Section -->
+  <header class="hero" id="home" aria-label="Hero section with tagline and call to action">
+    <h1>Comprehensive Oilfield Lease Services</h1>
+    <p>Based in Longview, Texas, A&amp;H Lease Services is your reliable partner in oilfield management and maintenance.  From lease road and pad construction to mowing, spraying and emergency spill cleanup, we provide 24/7 support across the Ark‑La‑TX‑OK region.</p>
+    <a href="#contact" class="cta-btn">Request a Free Quote</a>
+  </header>
+  <!-- Services Section -->
+  <section id="services" aria-labelledby="services-heading">
+    <h2 id="services-heading">Our Services</h2>
+    <p style="text-align:center; max-width:800px; margin:0 auto;">Our team delivers a full spectrum of oilfield lease services with safety, reliability and efficiency.  Click each service to learn more.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="icon">🚧</div>
+        <h3>Road Construction &amp; Maintenance</h3>
+        <p>We build and maintain durable lease roads to keep your operations accessible in all weather conditions.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🏗️</div>
+        <h3>Pad Construction &amp; Maintenance</h3>
+        <p>From initial grading and compaction to ongoing upkeep, our crews construct stable pads for drilling and production.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🔒</div>
+        <h3>24/7 Monitored Location Security</h3>
+        <p>Protect your assets with round‑the‑clock monitoring and rapid response for peace of mind.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🚪</div>
+        <h3>Fencing &amp; Gate Installation</h3>
+        <p>Secure your site with custom fences and gates designed to withstand harsh oilfield environments.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🪧</div>
+        <h3>Location Sign Manufacturing</h3>
+        <p>We fabricate and install compliant signage tailored to your lease requirements.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">📍</div>
+        <h3>Pipeline Marker Installation</h3>
+        <p>Precision installation and replacement of pipeline markers helps ensure safety and regulatory compliance.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">💦</div>
+        <h3>Pressure Washing &amp; Daylighting</h3>
+        <p>Clean and expose buried lines safely with our pressure washing, degreasing and daylighting services.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🌾</div>
+        <h3>Pipeline/Pad/Powerline Mowing</h3>
+        <p>Maintain clear ROWs with our efficient mowing crews equipped for pipelines, pads and powerlines.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🌿</div>
+        <h3>Weed Spraying &amp; Vegetation Management</h3>
+        <p>Keep rights‑of‑way free of invasive vegetation through targeted herbicide applications.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">☣️</div>
+        <h3>Hazardous Liquid Spill Clean‑Up</h3>
+        <p>Rapid response spill control and remediation services to protect your people, property and the environment.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🧹</div>
+        <h3>Jobsite Cleanup</h3>
+        <p>Comprehensive cleanup after drilling and production operations to restore your site quickly.</p>
+      </div>
+      <div class="service-card">
+        <div class="icon">🏜️</div>
+        <h3>General Dirt Work</h3>
+        <p>Excavation, grading and other dirt work performed by seasoned heavy equipment operators.</p>
+      </div>
+    </div>
+  </section>
+  <!-- Calculators Section -->
+  <section id="calculators" aria-labelledby="calculators-heading">
+    <h2 id="calculators-heading">Project Cost Estimators</h2>
+    <p style="text-align:center; max-width:800px; margin:0 auto;">Use our free calculators to estimate project costs.  These tools provide approximate values for planning purposes.  For a precise quote, please contact us directly.</p>
+    <div class="calculator-container">
+      <!-- Road Construction Calculator -->
+      <div class="calculator" id="road-calc">
+        <h3>Lease Road Construction Estimate</h3>
+        <label for="road-length">Road length (miles)</label>
+        <input type="number" id="road-length" min="0" step="0.1" placeholder="e.g., 2.5">
+        <label for="road-width">Road width (feet)</label>
+        <input type="number" id="road-width" min="0" step="1" placeholder="e.g., 20">
+        <label for="road-depth">Road depth (inches)</label>
+        <input type="number" id="road-depth" min="0" step="1" placeholder="e.g., 8">
+        <button onclick="calculateRoadCost()">Calculate Cost</button>
+        <div class="result" id="road-result"></div>
+      </div>
+      <!-- Pad Construction Calculator -->
+      <div class="calculator" id="pad-calc">
+        <h3>Pad Construction Estimate</h3>
+        <label for="pad-length">Pad length (feet)</label>
+        <input type="number" id="pad-length" min="0" step="1" placeholder="e.g., 200">
+        <label for="pad-width">Pad width (feet)</label>
+        <input type="number" id="pad-width" min="0" step="1" placeholder="e.g., 300">
+        <label for="pad-depth">Pad depth (inches)</label>
+        <input type="number" id="pad-depth" min="0" step="1" placeholder="e.g., 6">
+        <button onclick="calculatePadCost()">Calculate Cost</button>
+        <div class="result" id="pad-result"></div>
+      </div>
+      <!-- Mowing Calculator -->
+      <div class="calculator" id="mow-calc">
+        <h3>Pipeline/ROW Mowing Estimate</h3>
+        <label for="mow-length">Length to mow (miles)</label>
+        <input type="number" id="mow-length" min="0" step="0.1" placeholder="e.g., 5">
+        <button onclick="calculateMowCost()">Calculate Cost</button>
+        <div class="result" id="mow-result"></div>
+      </div>
+      <!-- Weed Spraying Calculator -->
+      <div class="calculator" id="spray-calc">
+        <h3>Weed Spraying Estimate</h3>
+        <label for="spray-length">Length to spray (miles)</label>
+        <input type="number" id="spray-length" min="0" step="0.1" placeholder="e.g., 5">
+        <button onclick="calculateSprayCost()">Calculate Cost</button>
+        <div class="result" id="spray-result"></div>
+      </div>
+    </div>
+  </section>
+  <!-- About Section -->
+  <section id="about" aria-labelledby="about-heading">
+    <h2 id="about-heading">About A&amp;H Lease Services</h2>
+    <div class="about-content">
+      <p>Founded and operated in Longview, Texas, A&amp;H Lease Services was built on the principles of integrity, hard work and customer satisfaction.  We started with a single dozer and a commitment to providing reliable lease road construction and have grown into a full‑service oilfield maintenance provider serving clients throughout the Ark‑La‑TX‑OK region.  Our crew members are trained to the highest safety standards and we pride ourselves on delivering quality work on time and on budget.</p>
+      <p>In addition to routine maintenance, we understand emergencies happen.  That’s why we offer 24/7 availability for spill response, cleanup and repairs.  Whether you need a new location built from the ground up or ongoing support for existing infrastructure, our team is ready to help.</p>
+    </div>
+  </section>
+  <!-- Contact Section -->
+  <section id="contact" aria-labelledby="contact-heading">
+    <h2 id="contact-heading">Get in Touch</h2>
+    <div class="contact-grid">
+      <!-- Contact details -->
+      <div class="contact-details">
+        <p><strong>Phone:</strong> <a href="tel:+19034241607">903‑424‑1607</a> / <a href="tel:+19035785710">903‑578‑5710</a></p>
+        <p><strong>Operating Hours:</strong> 24/7 Availability</p>
+        <p><strong>Service Area:</strong> Arkansas, Louisiana, Texas &amp; Oklahoma</p>
+        <p><strong>Email:</strong> <a href="mailto:info@ahleaseservice.com">info@ahleaseservice.com</a></p>
+        <p><strong>Website:</strong> <a href="https://www.ahleaseservice.com">www.ahleaseservice.com</a></p>
+      </div>
+      <!-- Contact form (non‑functional demonstration) -->
+      <form class="contact-form" onsubmit="return false;">
+        <label for="name">Name</label>
+        <input type="text" id="name" required placeholder="Your Name">
+        <label for="email">Email</label>
+        <input type="email" id="email" required placeholder="you@example.com">
+        <label for="message">Message</label>
+        <textarea id="message" rows="4" required placeholder="Tell us about your project..."></textarea>
+        <button type="submit">Send Message</button>
+        <p style="font-size:0.9rem; margin-top:0.5rem;">This form is a demo; to contact us, please call or email using the details provided.</p>
+      </form>
+    </div>
+  </section>
+  <!-- Footer -->
+  <footer>
+    <p>&copy; <span id="current-year"></span> A&amp;H Lease Services.  All rights reserved.</p>
+    <p>Designed by A&amp;H Lease Services with assistance from CGH Operations’ development team.</p>
+  </footer>
+  <!-- JavaScript for Calculators and dynamic year -->
+  <script>
+    // Update current year automatically
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    /**
+     * Convert cubic feet to cubic yards.
+     * @param {number} cubicFeet
+     * @returns {number}
+     */
+    function toCubicYards(cubicFeet) {
+      return cubicFeet / 27;
+    }
+    /**
+     * Format a number as currency in USD.
+     * @param {number} amount
+     * @returns {string}
+     */
+    function formatUSD(amount) {
+      return amount.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 2
+      });
+    }
+    /**
+     * Calculate approximate cost for lease road construction.
+     * We assume the cost depends on the volume of material (width x depth x length) and an approximate base rate.
+     * Costs per cubic yard and base mobilization fees are rough estimates and should not be considered quotes.
+     */
+    function calculateRoadCost() {
+      const length = parseFloat(document.getElementById('road-length').value) || 0;
+      const width = parseFloat(document.getElementById('road-width').value) || 0;
+      const depthInches = parseFloat(document.getElementById('road-depth').value) || 0;
+      if (length <= 0 || width <= 0 || depthInches <= 0) {
+        document.getElementById('road-result').textContent = 'Please enter valid dimensions.';
+        return;
+      }
+      // Convert miles to feet and inches to feet
+      const lengthFeet = length * 5280;
+      const depthFeet = depthInches / 12;
+      const volumeCubicFeet = lengthFeet * width * depthFeet;
+      const volumeCubicYards = toCubicYards(volumeCubicFeet);
+      // Rough cost per cubic yard and mobilization cost
+      const costPerYard = 45; // USD per cubic yard (approximate)
+      const mobilization = 1500; // USD base mobilization fee
+      const total = volumeCubicYards * costPerYard + mobilization;
+      document.getElementById('road-result').textContent = 'Estimated cost: ' + formatUSD(total);
+    }
+    /**
+     * Calculate approximate cost for pad construction.
+     */
+    function calculatePadCost() {
+      const length = parseFloat(document.getElementById('pad-length').value) || 0;
+      const width = parseFloat(document.getElementById('pad-width').value) || 0;
+      const depthInches = parseFloat(document.getElementById('pad-depth').value) || 0;
+      if (length <= 0 || width <= 0 || depthInches <= 0) {
+        document.getElementById('pad-result').textContent = 'Please enter valid dimensions.';
+        return;
+      }
+      const depthFeet = depthInches / 12;
+      const volumeCubicFeet = length * width * depthFeet;
+      const volumeCubicYards = toCubicYards(volumeCubicFeet);
+      const costPerYard = 40; // USD per cubic yard (approximate, may differ from road due to different specs)
+      const mobilization = 1200; // USD base fee
+      const total = volumeCubicYards * costPerYard + mobilization;
+      document.getElementById('pad-result').textContent = 'Estimated cost: ' + formatUSD(total);
+    }
+    /**
+     * Calculate approximate cost for mowing rights-of-way.
+     */
+    function calculateMowCost() {
+      const length = parseFloat(document.getElementById('mow-length').value) || 0;
+      if (length <= 0) {
+        document.getElementById('mow-result').textContent = 'Please enter a valid distance.';
+        return;
+      }
+      const costPerMile = 320; // USD per mile (approximate)
+      const mobilization = 500; // USD base fee
+      const total = length * costPerMile + mobilization;
+      document.getElementById('mow-result').textContent = 'Estimated cost: ' + formatUSD(total);
+    }
+    /**
+     * Calculate approximate cost for weed spraying.
+     */
+    function calculateSprayCost() {
+      const length = parseFloat(document.getElementById('spray-length').value) || 0;
+      if (length <= 0) {
+        document.getElementById('spray-result').textContent = 'Please enter a valid distance.';
+        return;
+      }
+      const costPerMile = 180; // USD per mile (approximate)
+      const mobilization = 300; // USD base fee
+      const total = length * costPerMile + mobilization;
+      document.getElementById('spray-result').textContent = 'Estimated cost: ' + formatUSD(total);
+    }
+  </script>
+</body>
+</html>
