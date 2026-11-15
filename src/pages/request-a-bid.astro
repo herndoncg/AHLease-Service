@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import BidForm from '../components/BidForm.astro';
+import { site } from '../data/site';
+---
+<Base title="Request a Bid" description="Request a bid from A&H Lease Services for lease roads, pads, mowing, weed spraying, fencing, signs, cleanup or dirt work. Based in Longview, TX. Call 903-424-1607.">
+  <section class="pagehead band plat">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li>Request a bid</li></ol>
+      <h1>Request a bid</h1>
+      <p class="lede">Tell us where the location is and what it needs. A person reads every request and calls you back.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap split">
+      <div class="panel"><BidForm /></div>
+      <aside class="reach">
+        <h2>Or reach us directly</h2>
+        <dl>
+          <div><dt>Call, any hour</dt><dd><a href={site.phoneHref}>{site.phone}</a>{site.phone2 && <><br /><a href={site.phone2Href}>{site.phone2}</a></>}</dd></div>
+          <div><dt>Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
+          <div><dt>Based in</dt><dd>{site.city}, Texas</dd></div>
+          <div><dt>Working in</dt><dd>{site.statesServed.join(', ')}</dd></div>
+        </dl>
+        <p class="muted">Want a number first? <a class="textlink" href="/estimators">Use the estimators</a> for a price range on roads, pads, mowing and spraying.</p>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .reach h2 { font-size: 1.5rem; }
+  .reach dl { margin: 0 0 24px; border-top: 2px solid var(--green); }
+  .reach dl > div { padding: 15px 0; border-bottom: 1px solid var(--border); }
+  .reach dt { font-family: var(--font-display); font-stretch: 112%; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
+  .reach dd { margin: 0; font-weight: 600; font-size: 1.08rem; }
+  .reach dd a { color: var(--green-deep); text-underline-offset: 3px; }
+</style>

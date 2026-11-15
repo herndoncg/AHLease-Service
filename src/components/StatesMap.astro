@@ -1,0 +1,35 @@
+---
+// The four states A&H works in, drawn from US Census outlines, with Longview marked as home base.
+// (The outline file is the same one the CGH site uses.)
+import map from '../data/states-map.json';
+const [lx, ly] = map.pins.longview;
+const label: Record<string, [number, number]> = { Texas: [372, 486], Oklahoma: [556, 192], Arkansas: [781, 212], Louisiana: [798, 434] };
+---
+<figure class="smap">
+  <svg viewBox={`0 0 ${map.w} ${map.h}`} role="img" aria-label="Map of Texas, Arkansas, Oklahoma and Louisiana, with Longview, Texas marked as home base.">
+    {map.states.map((s) => <path class={`smap__state smap__state--${s.name.toLowerCase()}`} d={s.d} />)}
+    {map.states.map((s) => <text class={`smap__name smap__name--${s.name.toLowerCase()}`} x={label[s.name][0]} y={label[s.name][1]} text-anchor="middle">{s.name}</text>)}
+    <g class="smap__pin">
+      <circle class="smap__pulse" cx={lx} cy={ly} r="20" />
+      <circle class="smap__ring" cx={lx} cy={ly} r="20" />
+      <circle class="smap__dot" cx={lx} cy={ly} r="9" />
+      <text x={lx - 32} y={ly + 12} text-anchor="end">Longview</text>
+    </g>
+  </svg>
+</figure>
+
+<style>
+  .smap { margin: 0; }
+  .smap svg { display: block; width: 100%; height: auto; overflow: visible; }
+  .smap__state { fill: #0d5a45; stroke: #052a20; stroke-width: 3; stroke-linejoin: round; }
+  .smap__state--texas { fill: #13705a; }
+  .smap__name { fill: #f1f4f1; font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 26px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.8; }
+  .smap__name--texas { font-size: 44px; }
+  .smap__name--louisiana { font-size: 22px; }
+  .smap__pin text { fill: #fff; font-family: var(--font-display); font-stretch: 112%; font-weight: 700; font-size: 34px; paint-order: stroke; stroke: #13705a; stroke-width: 8px; stroke-linejoin: round; }
+  .smap__dot { fill: var(--gold); }
+  .smap__ring { fill: none; stroke: var(--gold); stroke-width: 3; }
+  .smap__pulse { fill: none; stroke: var(--gold); stroke-width: 3; transform-box: fill-box; transform-origin: center; animation: smap-pulse 2.8s ease-out infinite; }
+  @keyframes smap-pulse { from { transform: scale(1); opacity: 0.8; } to { transform: scale(2.6); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .smap__pulse { animation: none; opacity: 0; } }
+</style>

@@ -1,0 +1,112 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/public-sans';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+import { services } from '../data/services';
+
+interface Props {
+  title: string;
+  description: string;
+  type?: 'website' | 'article';
+  schema?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { title, description: rawDescription, type = 'website', schema = [], noindex = false } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(path, site.url).href;
+// Google shows about 60 characters of a title and 155 of a description.
+const withName = `${title} | A&H Lease Services`;
+const fullTitle = title.includes('A&H') ? title : withName.length <= 60 ? withName : `${title} | A&H`;
+const clip = (s: string, n: number) => (s.length <= n ? s : s.slice(0, s.lastIndexOf(' ', n - 1)).replace(/[,;:.\s]+$/, '') + '.');
+const description = clip(rawDescription, 158);
+const ogImage = new URL('/og-default.png', site.url).href;
+const onBidPage = path.startsWith('/request-a-bid');
+
+const business: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'GeneralContractor',
+  '@id': `${site.url}/#business`,
+  name: site.name,
+  description: 'Oilfield lease services contractor based in Longview, Texas, serving Texas, Louisiana, Arkansas and Oklahoma: lease road and pad construction, right-of-way mowing, weed spraying, fencing, location signs, pipeline markers, spill cleanup and dirt work.',
+  url: site.url,
+  telephone: site.phoneSchema,
+  email: site.email,
+  image: ogImage,
+  address: { '@type': 'PostalAddress', addressLocality: site.city, addressRegion: site.state, addressCountry: 'US', ...(site.postalCode ? { postalCode: site.postalCode } : {}) },
+  areaServed: site.statesServed.map((s) => ({ '@type': 'State', name: s })),
+  openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '00:00', closes: '23:59' }],
+  hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Oilfield lease services', itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name, url: `${site.url}/services/${s.slug}` } })) },
+};
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- 0.9 = phones show the site slightly zoomed out, with roomier margins (Colton's preference, same as the CGH site). -->
+    <meta name="viewport" content="width=device-width, initial-scale=0.9" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#073a2c" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(business)} />
+    {schema.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
+
+    <script is:inline>
+      // Remembers where a visitor came from (Google, Facebook, direct...) the first time they land,
+      // so the bid form can pass it along with the lead. Kept only in this browser tab.
+      (function () {
+        try {
+          if (sessionStorage.getItem('ah_src')) return;
+          var q = new URLSearchParams(location.search), ref = document.referrer, host = '';
+          try { host = ref ? new URL(ref).hostname.replace(/^www\./, '') : ''; } catch (e) {}
+          var tag = (q.get('utm_source') || '').toLowerCase(), src = 'Direct';
+          if (q.get('gclid') || /google/.test(tag)) src = 'Google Ads';
+          else if (q.get('fbclid') || /facebook|fb|instagram|meta/.test(tag)) src = 'Facebook';
+          else if (tag) src = tag;
+          else if (/google\./.test(host)) src = 'Google';
+          else if (/facebook\.|fb\.|instagram\./.test(host)) src = 'Facebook';
+          else if (/bing\.|duckduckgo\.|yahoo\./.test(host)) src = 'Other search';
+          else if (host && host !== location.hostname) src = host;
+          sessionStorage.setItem('ah_src', src);
+          sessionStorage.setItem('ah_landing', location.pathname);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+    <nav class="callbar" aria-label="Quick contact">
+      <a href={site.phoneHref} class="callbar__call">Call</a>
+      {!onBidPage && <a href="/request-a-bid" class="callbar__bid">Request a bid</a>}
+    </nav>
+
+    <style>
+      .callbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: none; padding-bottom: env(safe-area-inset-bottom); background: var(--green-deep); box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.12); }
+      /* Solid green carries on below the bar, so the page never shows through under the buttons on
+         phones that float their address bar over the page. */
+      .callbar::after { content: ''; position: absolute; left: 0; right: 0; top: calc(100% - 1px); height: 240px; background: var(--green-deep); }
+      .callbar a { display: flex; align-items: center; justify-content: center; min-height: 56px; flex: 1 1 0; font-family: var(--font-display); font-stretch: 112%; font-weight: 650; font-size: 1.02rem; letter-spacing: 0.02em; text-decoration: none; background: var(--green-deep); color: #fff; }
+      .callbar .callbar__bid { flex-grow: 1.5; background: var(--gold); color: var(--ink); }
+      @media (max-width: 860px) { .callbar { display: flex; } }
+    </style>
+  </body>
+</html>

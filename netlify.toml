@@ -1,0 +1,25 @@
+# Netlify build settings for ahleaseservice.com. These override whatever is typed into the Netlify dashboard.
+# Plain version: "install the site's tools, build it, and publish the folder called dist".
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Send the www address to the plain one so Google keeps a single copy of the site.
+[[redirects]]
+  from = "https://www.ahleaseservice.com/*"
+  to = "https://ahleaseservice.com/:splat"
+  status = 301
+  force = true
+
+# The old one-page site used #calculators and "contact". Old links still land somewhere useful.
+[[redirects]]
+  from = "/calculators"
+  to = "/estimators"
+  status = 301
+[[redirects]]
+  from = "/contact"
+  to = "/request-a-bid"
+  status = 301

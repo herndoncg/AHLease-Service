@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import StatesMap from '../components/StatesMap.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+// One page for the whole service area. Town pages are left out on purpose: copy-and-paste town
+// pages hurt on Google. Add a page for a region only when there is real, different content for it.
+const regions = [
+  { name: 'East Texas', line: 'Home ground. Longview sits in the East Texas oil field, with the Haynesville shale next door.' },
+  { name: 'Northwest Louisiana', line: 'Across the state line into the Haynesville country around Shreveport and south of it.' },
+  { name: 'South Arkansas', line: 'Up through Texarkana into the oil and gas country of south Arkansas.' },
+  { name: 'Oklahoma', line: 'North across the Red River for road, pad and right-of-way work.' },
+];
+---
+<Base title="Service Area: Texas, Louisiana, Arkansas, Oklahoma" description="A&H Lease Services works out of Longview, Texas across East Texas, northwest Louisiana, south Arkansas and Oklahoma for lease roads, pads, mowing, spraying and cleanup.">
+  <section class="pagehead band plat">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li>Service area</li></ol>
+      <h1>Where we work</h1>
+      <p class="lede">Based in {site.city}, Texas. On locations across four states.</p>
+    </div>
+  </section>
+  <section class="section band area">
+    <div class="wrap split split--even">
+      <StatesMap />
+      <ul class="regions">
+        {regions.map((r) => <li><h2>{r.name}</h2><p>{r.line}</p></li>)}
+      </ul>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap narrow">
+      <p class="eyebrow">Travel</p>
+      <h2>How distance affects the price.</h2>
+      <p class="lede">Moving equipment is a real cost, and we put it on the bid as its own line so you can see it. The farther the location, the more it helps to group work: a road, a pad and the fence in one trip cost less than three separate call-outs.</p>
+      <p>Not sure if you are in range? Call <a class="textlink" href={site.phoneHref}>{site.phone}</a> with the county and we will tell you straight.</p>
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+
+<style>
+  .area { padding-top: clamp(36px, 5vw, 64px); }
+  .area .smap { max-width: 540px; width: 100%; justify-self: center; }
+  .regions { list-style: none; margin: 0; padding: 0; align-self: center; }
+  .regions li { padding: 20px 0; border-top: 1px solid var(--border-strong); }
+  .regions li:last-child { border-bottom: 1px solid var(--border-strong); }
+  .regions h2 { font-size: 1.3rem; margin-bottom: 6px; }
+  .regions p { margin: 0; color: var(--text-2); }
+</style>

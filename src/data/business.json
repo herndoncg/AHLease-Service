@@ -1,0 +1,21 @@
+{
+  "phone": "(903) 424-1607",
+  "phone2": "(903) 690-3093",
+  "email": "info@ahleaseservice.com",
+  "city": "Longview",
+  "state": "TX",
+  "postalCode": "",
+  "availability": "24/7 call-out",
+  "insured": false,
+  "statesServed": ["Texas", "Louisiana", "Arkansas", "Oklahoma"],
+  "equipment": ["Dozer", "Backhoe", "Skid steer", "Roller", "Two dump trucks"],
+  "verse": {
+    "text": "And whatsoever ye do, do it heartily, as to the Lord, and not unto men.",
+    "ref": "Colossians 3:23"
+  },
+  "sisterCompany": {
+    "name": "CGH Operations",
+    "url": "https://cghoperations.com",
+    "line": "Asphalt paving and dirt work, same crew"
+  }
+}

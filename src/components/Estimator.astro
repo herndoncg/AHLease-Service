@@ -1,0 +1,139 @@
+---
+// The four estimators. The visitor types a job size and gets a price range right away, with no
+// contact details asked first. The math and the rates are on the server (netlify/functions), so
+// the rates cannot be read out of this page.
+import { site } from '../data/site';
+const tabs = [
+  { key: 'road', label: 'Lease road', service: 'Lease Road Construction & Maintenance' },
+  { key: 'pad', label: 'Pad', service: 'Pad Construction & Maintenance' },
+  { key: 'mowing', label: 'ROW mowing', service: 'Pipeline, Pad & Powerline Mowing' },
+  { key: 'spraying', label: 'Weed spraying', service: 'Weed Spraying & Vegetation Management' },
+];
+---
+<div class="est" data-est>
+  <div class="est__tabs" role="tablist" aria-label="What do you need priced?">
+    {tabs.map((t, i) => <button type="button" role="tab" id={`est-tab-${t.key}`} aria-controls={`est-${t.key}`} aria-selected={i === 0 ? 'true' : 'false'} data-tab={t.key} data-service={t.service}>{t.label}</button>)}
+  </div>
+
+  <form class="est__form" id="est-road" role="tabpanel" aria-labelledby="est-tab-road" data-type="road">
+    <div class="form-grid">
+      <div class="field"><label for="road-length">Road length</label><input id="road-length" name="length" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 2,000" required /></div>
+      <div class="field"><label for="road-unit">Measured in</label><select id="road-unit" name="unit"><option value="feet">Feet</option><option value="miles">Miles</option></select></div>
+      <div class="field"><label for="road-width">Road width (feet)</label><input id="road-width" name="width" type="number" inputmode="decimal" min="0" step="any" value="16" required /><small>Most lease roads are 14 to 20 ft.</small></div>
+      <div class="field"><label for="road-depth">Rock depth (inches)</label><input id="road-depth" name="depth" type="number" inputmode="decimal" min="0" step="any" value="6" required /><small>4 for light traffic, 6 to 8 for rig traffic.</small></div>
+    </div>
+    <button class="btn btn--green" type="submit">Show the range</button>
+  </form>
+
+  <form class="est__form" id="est-pad" role="tabpanel" aria-labelledby="est-tab-pad" data-type="pad" hidden>
+    <div class="form-grid">
+      <div class="field"><label for="pad-length">Pad length (feet)</label><input id="pad-length" name="length" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 300" required /></div>
+      <div class="field"><label for="pad-width">Pad width (feet)</label><input id="pad-width" name="width" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 200" required /></div>
+      <div class="field full"><label for="pad-depth">Rock depth (inches)</label><input id="pad-depth" name="depth" type="number" inputmode="decimal" min="0" step="any" value="6" required /><small>6 inches is common for a drilling location.</small></div>
+    </div>
+    <button class="btn btn--green" type="submit">Show the range</button>
+  </form>
+
+  {(['mowing', 'spraying'] as const).map((k) => (
+    <form class="est__form" id={`est-${k}`} role="tabpanel" aria-labelledby={`est-tab-${k}`} data-type={k} hidden>
+      <div class="form-grid">
+        <div class="field full">
+          <label for={`${k}-unit`}>How do you measure it?</label>
+          <select id={`${k}-unit`} name="unit" data-unit><option value="row">Right-of-way: miles long and feet wide</option><option value="acres">Acres</option></select>
+        </div>
+        <div class="field" data-for="row"><label for={`${k}-miles`}>Length (miles)</label><input id={`${k}-miles`} name="miles" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 5" /></div>
+        <div class="field" data-for="row"><label for={`${k}-width`}>Width (feet)</label><input id={`${k}-width`} name="width" type="number" inputmode="decimal" min="0" step="any" value="50" /><small>Many pipeline rights-of-way are 30 to 50 ft.</small></div>
+        <div class="field full" data-for="acres" hidden><label for={`${k}-acres`}>Acres</label><input id={`${k}-acres`} name="acres" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 12" /></div>
+      </div>
+      <button class="btn btn--green" type="submit">Show the range</button>
+    </form>
+  ))}
+
+  <div class="est__out" aria-live="polite" hidden>
+    <p class="est__label">Estimated range</p>
+    <p class="est__price"></p>
+    <p class="est__sum"></p>
+    <div class="est__cols">
+      <div><p class="est__h">What this covers</p><ul class="checks est__inc"></ul></div>
+      <div><p class="est__h">Not in this range</p><ul class="est__notes"></ul></div>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn--gold" href="/request-a-bid">Send this for a firm bid</a>
+      <a class="btn btn--line" href={site.phoneHref}>Call {site.phone}</a>
+    </div>
+    <p class="legal">A planning range from typical going rates, not a bid. A firm price comes after we see the location.</p>
+  </div>
+  <p class="est__err" role="alert" hidden></p>
+</div>
+
+<script is:inline define:vars={{ phone: site.phone }}>
+  (function () {
+    var root = document.querySelector('[data-est]'); if (!root) return;
+    var tabs = root.querySelectorAll('[data-tab]'), forms = root.querySelectorAll('.est__form');
+    var out = root.querySelector('.est__out'), err = root.querySelector('.est__err');
+    var money = function (n) { return '$' + Math.round(n).toLocaleString('en-US'); };
+    function pick(key) {
+      tabs.forEach(function (t) { t.setAttribute('aria-selected', t.dataset.tab === key ? 'true' : 'false'); });
+      forms.forEach(function (f) { f.hidden = f.dataset.type !== key; });
+      out.hidden = true; err.hidden = true;
+    }
+    tabs.forEach(function (t) { t.addEventListener('click', function () { pick(t.dataset.tab); }); });
+    // A link like /estimators#pad opens that tab.
+    var start = location.hash.replace('#', ''); if (root.querySelector('[data-tab="' + start + '"]')) pick(start);
+    root.querySelectorAll('[data-unit]').forEach(function (sel) {
+      sel.addEventListener('change', function () { sel.form.querySelectorAll('[data-for]').forEach(function (el) { el.hidden = el.dataset.for !== sel.value; }); });
+    });
+    function fill(list, items) { list.textContent = ''; (items || []).forEach(function (s) { var li = document.createElement('li'); li.textContent = s; list.appendChild(li); }); }
+    forms.forEach(function (f) {
+      f.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var body = { type: f.dataset.type }, btn = f.querySelector('button[type=submit]');
+        new FormData(f).forEach(function (v, k) { body[k] = v; });
+        btn.disabled = true; btn.textContent = 'Working...'; err.hidden = true;
+        fetch('/api/estimate', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (!d.ok) { out.hidden = true; err.textContent = d.message || 'Check the numbers and try again.'; err.hidden = false; return; }
+            var tab = root.querySelector('[data-tab="' + f.dataset.type + '"]');
+            if (d.needsVisit) {
+              root.querySelector('.est__label').textContent = 'This one needs a site visit';
+              root.querySelector('.est__price').textContent = 'Call ' + phone;
+              root.querySelector('.est__sum').textContent = d.message;
+              root.querySelector('.est__cols').hidden = true;
+              try { sessionStorage.removeItem('ah_estimate'); sessionStorage.setItem('ah_estimate_service', tab.dataset.service); } catch (x) {}
+            } else {
+              root.querySelector('.est__label').textContent = 'Estimated range';
+              root.querySelector('.est__price').textContent = money(d.low) + ' to ' + money(d.high);
+              root.querySelector('.est__sum').textContent = d.summary;
+              root.querySelector('.est__cols').hidden = false;
+              fill(root.querySelector('.est__inc'), d.includes); fill(root.querySelector('.est__notes'), d.notes);
+              // Carried to the bid form if they ask for a firm bid.
+              try { sessionStorage.setItem('ah_estimate', d.summary + '. Website range: ' + money(d.low) + ' to ' + money(d.high) + '.'); sessionStorage.setItem('ah_estimate_service', tab.dataset.service); } catch (x) {}
+            }
+            out.hidden = false; out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          })
+          .catch(function () { out.hidden = true; err.textContent = 'The estimator could not be reached. Call ' + phone + ' and we will price it with you.'; err.hidden = false; })
+          .then(function () { btn.disabled = false; btn.textContent = 'Show the range'; });
+      });
+    });
+  })();
+</script>
+
+<style>
+  .est { background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--green); border-radius: var(--radius-lg); overflow: hidden; }
+  .est__tabs { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--green-deep); }
+  .est__tabs button { min-height: 58px; padding: 8px 6px; border: 0; border-bottom: 3px solid transparent; background: transparent; color: #c9d6cf; cursor: pointer; font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.01em; }
+  .est__tabs button[aria-selected='true'] { color: #fff; border-bottom-color: var(--gold); background: rgba(255, 255, 255, 0.06); }
+  .est__form { padding: clamp(20px, 3vw, 32px); display: grid; gap: 22px; }
+  .est__form .btn { justify-self: start; }
+  .est__out { margin: 0 clamp(20px, 3vw, 32px) clamp(20px, 3vw, 32px); padding-top: 26px; border-top: 1px solid var(--border-strong); }
+  .est__label, .est__h { font-family: var(--font-display); font-stretch: 112%; font-size: 0.76rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin: 0 0 8px; }
+  .est__price { font-family: var(--font-display); font-stretch: 116%; font-weight: 700; font-size: clamp(1.9rem, 5vw, 3rem); letter-spacing: -0.03em; line-height: 1.05; color: var(--green); margin: 0 0 8px; }
+  .est__sum { color: var(--text-2); max-width: 62ch; }
+  .est__cols { display: grid; gap: 22px; margin: 22px 0; }
+  .est__notes { margin: 0; padding-left: 1.1em; color: var(--text-2); display: grid; gap: 8px; }
+  .est__out .legal { margin: 16px 0 0; }
+  .est__err { margin: 0 clamp(20px, 3vw, 32px) clamp(20px, 3vw, 32px); padding: 12px 14px; border-left: 3px solid var(--danger); background: var(--field); font-weight: 600; }
+  @media (min-width: 760px) { .est__cols { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .est__tabs { grid-template-columns: 1fr 1fr; } .est__form .btn { justify-self: stretch; } }
+</style>

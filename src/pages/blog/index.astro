@@ -1,0 +1,33 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+---
+<Base title="Field Notes: Lease Roads, Pads & Upkeep" description="Plain-language notes from A&H Lease Services on lease roads, pads, right-of-way mowing, weed spraying and keeping oilfield locations in order.">
+  <section class="pagehead band plat">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li>Field notes</li></ol>
+      <h1>Field notes</h1>
+      <p class="lede">Short, plain answers to questions operators ask about roads, pads and upkeep.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap narrow">
+      <ul class="posts">
+        {posts.map((p) => (
+          <li><a href={`/blog/${p.id}`}><span class="posts__meta">{p.data.category} · {fmt(p.data.date)}</span><h2>{p.data.title}</h2><p>{p.data.description}</p></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .posts { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--green); }
+  .posts a { display: block; padding: 26px 0; text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+  .posts__meta { font-family: var(--font-display); font-stretch: 112%; font-size: 0.74rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; color: var(--muted); }
+  .posts h2 { font-size: clamp(1.3rem, 2.2vw, 1.7rem); margin: 8px 0; }
+  .posts p { margin: 0; color: var(--text-2); }
+  .posts a:hover h2 { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--gold-dark); }
+</style>

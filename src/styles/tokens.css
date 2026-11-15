@@ -1,0 +1,84 @@
+/*
+  A&H Lease Services brand tokens.
+
+  Colors are A&H's own, taken from the old site's code (which says they came from the A&H flyers):
+    - Lease green #0b4f3c : the main brand color. Header, dark panels, headings on light pages.
+    - Deep green  #073a2c : the darkest panels, the footer, hover on green.
+    - Gold        #d4a200 : buttons and thin accent lines ONLY. Never text on a light background.
+                            Words on a gold button are near-black.
+    - Near-black  #1a1a1a : body text.
+    - Mid grey            : page backgrounds. Colton finds white hard on the eyes, so nothing is white.
+                            The greys lean very slightly green so they sit well with the lease green:
+                            page #bfc2bd, alternate sections #b3b7b0, cards #cbcec9, form boxes #d7dad5.
+
+  Pages are light by default. Add class="band" to a section to make it dark green.
+*/
+:root {
+  --green: #0b4f3c;
+  --green-deep: #073a2c;
+  --green-ink: #052a20;
+  --green-3: #11604a;
+  --gold: #d4a200;
+  --gold-dark: #b38900;
+  --ink: #1a1a1a;
+  --page: #bfc2bd;
+  --page-2: #b3b7b0;
+  --card: #cbcec9;
+  --field: #d7dad5;
+  --danger: #8f1d17;
+
+  --bg: var(--page);
+  --bg-2: var(--page-2);
+  --surface: var(--card);
+  --text: var(--ink);
+  --text-2: #26302b;
+  --muted: #36413b;
+  --border: rgba(5, 42, 32, 0.2);
+  --border-strong: rgba(5, 42, 32, 0.42);
+  --accent: var(--green-deep);
+  --heading: var(--green);
+  --rule: var(--gold-dark);
+
+  --font-display: 'Archivo Variable', 'Archivo', 'Arial', system-ui, sans-serif;
+  --font-body: 'Public Sans Variable', 'Public Sans', 'Segoe UI', system-ui, sans-serif;
+
+  --radius: 3px;
+  --radius-lg: 6px;
+  --max: 1180px;
+  --gutter: clamp(22px, 5vw, 56px);
+  --section: clamp(64px, 8.5vw, 116px);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+/* phones: less empty space between sections, so there is less scrolling */
+@media (max-width: 759px) { :root { --section: 46px; } }
+
+.band {
+  --bg: var(--green-deep);
+  --bg-2: var(--green);
+  --surface: #0a4635;
+  --text: #f1f4f1;
+  --text-2: #d3ddd7;
+  --muted: #a9b9b0;
+  --border: rgba(241, 244, 241, 0.14);
+  --border-strong: rgba(241, 244, 241, 0.32);
+  --accent: #f1f4f1;
+  --heading: #f1f4f1;
+  --rule: var(--gold);
+  background-color: var(--bg);
+  color: var(--text);
+}
+/* The survey grid: thin section lines like a lease plat. It is a pattern, not a picture, and it
+   stands in behind dark panels until real job photos are added. */
+.plat { position: relative; isolation: isolate; }
+.plat::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(212, 162, 0, 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 162, 0, 0.11) 1px, transparent 1px),
+    linear-gradient(rgba(241, 244, 241, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(241, 244, 241, 0.045) 1px, transparent 1px);
+  background-size: 264px 264px, 264px 264px, 66px 66px, 66px 66px;
+  background-position: -1px -1px;
+  -webkit-mask-image: linear-gradient(100deg, transparent 0%, rgba(0, 0, 0, 0.35) 38%, #000 100%);
+  mask-image: linear-gradient(100deg, transparent 0%, rgba(0, 0, 0, 0.35) 38%, #000 100%);
+}

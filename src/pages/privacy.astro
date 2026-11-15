@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+<Base title="Privacy" description="How A&H Lease Services handles the information you send through this website.">
+  <section class="pagehead band plat"><div class="wrap"><ol class="crumbs"><li><a href="/">Home</a></li><li>Privacy</li></ol><h1>Privacy</h1></div></section>
+  <section class="section">
+    <div class="wrap prose">
+      <p>This page explains, in plain words, what this website collects and what we do with it.</p>
+      <h2>What we collect</h2>
+      <p>When you send a bid request, we receive what you typed into the form: your name, company, phone, email, the location and the details of the job. We also receive which page you sent it from and how you found the site (for example, a Google search), so we know what is working.</p>
+      <p>The estimators do not ask who you are. The job size you enter is used to work out a price range and is not stored with your name.</p>
+      <h2>What we do with it</h2>
+      <p>We use it to answer you and to bid and schedule your work. We do not sell it, rent it or hand it to marketers.</p>
+      <h2>Who else handles it</h2>
+      <p>The website is hosted by Netlify, which stores form submissions for us. Nobody else receives your information from this website.</p>
+      <h2>Questions or removal</h2>
+      <p>To ask what we have on file or to have it removed, call <a href={site.phoneHref}>{site.phone}</a> or email <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+    </div>
+  </section>
+</Base>

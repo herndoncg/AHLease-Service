@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../data/site';
+---
+<Base title="About A&H Lease Services, Longview TX" description="A&H Lease Services is a faith-based, family-oriented oilfield lease contractor in Longview, Texas. It started with a single dozer and still runs its own crew and equipment.">
+  <section class="pagehead band plat">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li>About</li></ol>
+      <h1>It started with a single dozer.</h1>
+      <p class="lede">A&amp;H Lease Services is a faith-based, family-oriented company from {site.city}, Texas.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap split">
+      <div class="prose">
+        <p>A&amp;H began with one dozer and one promise: build the lease road right and show up when we said we would. Operators kept calling, and the work grew from roads into pads, then into the upkeep a location needs for the rest of its life, from mowing and spraying to signs, markers, fencing and cleanup.</p>
+        <p>We are still a small company on purpose. The people you talk to are the people on the job. The crew runs our own dozer, backhoe, skid steer, roller and dump trucks, so the schedule is ours to keep.</p>
+        <h2>What we hold to</h2>
+        <ul class="checks">
+          <li>Do the work as if our name were on the lease sign.</li>
+          <li>Tell the customer the truth about price, schedule and what we found.</li>
+          <li>Treat the landowner’s place with respect. Gates closed, ruts dressed, trash hauled.</li>
+          <li>Answer the phone, including at night.</li>
+        </ul>
+        <h2>Faith</h2>
+        <p>Our faith is the reason we work the way we do. We are not perfect, but we answer to more than a customer.</p>
+        <blockquote class="verse"><p>“{site.verse.text}”</p><cite>{site.verse.ref}</cite></blockquote>
+      </div>
+      <aside class="panel">
+        <h3>Paving and dirt work</h3>
+        <p>The same crew runs <strong>{site.sister.name}</strong> for asphalt paving: driveways, parking lots and private roads.</p>
+        <p><a class="textlink" href={site.sister.url} rel="noopener">Visit cghoperations.com</a></p>
+      </aside>
+    </div>
+  </section>
+  <CtaBand />
+</Base>
+
+<style>
+  .verse { margin: 1.4em 0 0; padding: 4px 0 4px 22px; border-left: 3px solid var(--gold-dark); }
+  .verse p { font-family: var(--font-display); font-stretch: 105%; font-weight: 500; font-size: 1.2rem; line-height: 1.45; color: var(--green); margin: 0 0 8px; }
+  .verse cite { font-style: normal; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+</style>

@@ -1,0 +1,62 @@
+# A&H Lease Services content portal (Pages CMS). Open ahleaseservice.com/admin (or app.pagescms.org) and sign in with GitHub.
+# Everything changed here saves straight to the website and goes live in about 1-2 minutes.
+
+media:
+- name: photos
+  label: Job photos
+  input: public/img/uploads
+  output: /img/uploads
+  extensions: [jpg, jpeg, png, webp]
+  rename: safe
+
+content:
+- name: business
+  label: Business facts (phones, email, verse)
+  type: file
+  path: src/data/business.json
+  fields:
+  - { name: phone, label: Main phone, type: string, required: true }
+  - { name: phone2, label: Second phone, type: string }
+  - { name: email, label: Email shown on the site, type: string }
+  - { name: city, label: City, type: string }
+  - { name: state, label: State, type: string }
+  - { name: postalCode, label: ZIP code (optional), type: string }
+  - { name: availability, label: Availability line, type: string }
+  - { name: insured, label: 'Show "Insured" on the site (only when a policy is active)', type: boolean }
+  - { name: statesServed, label: States served, type: string, list: true }
+  - { name: equipment, label: Equipment list, type: string, list: true }
+  - name: verse
+    label: Verse
+    type: object
+    fields:
+    - { name: text, label: Verse text, type: text }
+    - { name: ref, label: Reference, type: string }
+  - name: sisterCompany
+    label: Sister company link
+    type: object
+    fields:
+    - { name: name, label: Name, type: string }
+    - { name: url, label: Web address, type: string }
+    - { name: line, label: One-line description, type: string }
+
+- name: blog
+  label: Field notes (blog posts)
+  type: collection
+  path: src/content/blog
+  format: yaml-frontmatter
+  filename: '{primary}.md'
+  view:
+    fields: [title, date, category, draft]
+    primary: title
+    sort: [date, title]
+    default: { sort: date, order: desc }
+  fields:
+  - { name: title, label: Title, type: string, required: true }
+  - { name: description, label: 'Short summary (shows on Google, 1-2 sentences)', type: text, required: true }
+  - { name: date, label: Publish date, type: date, required: true }
+  - name: category
+    label: Category
+    type: select
+    options: { values: [Roads, Pads, Vegetation, Upkeep, Company] }
+  - { name: draft, label: 'Draft (hide from the site)', type: boolean, default: false }
+  - { name: body, label: Post, type: rich-text }

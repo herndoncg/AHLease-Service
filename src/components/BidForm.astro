@@ -1,0 +1,82 @@
+---
+// The bid request form. Netlify Forms collects every submission (Netlify > ahleaseservice > Forms > "bid").
+// Every field the form sends must exist here as an input, or Netlify ignores it.
+import { site } from '../data/site';
+import { services } from '../data/services';
+---
+<form class="bid" name={site.bidFormName} method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field">
+  <input type="hidden" name="form-name" value={site.bidFormName} />
+  <!-- Spam trap: real visitors never see or fill this box. Netlify drops any submission where it is filled. -->
+  <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+  <!-- Filled in by the script below: the estimator result (if they used it) and where the visitor came from. -->
+  <input type="hidden" name="estimate" />
+  <input type="hidden" name="lead_source" />
+  <input type="hidden" name="landing_page" />
+  <input type="hidden" name="sent_from" />
+
+  <div class="bid__est" hidden>
+    <p class="bid__est-label">Sending with your estimate</p>
+    <p class="bid__est-text"></p>
+  </div>
+
+  <div class="form-grid">
+    <div class="field"><label for="bid-name">Your name</label><input id="bid-name" name="name" type="text" autocomplete="name" required /></div>
+    <div class="field"><label for="bid-company">Company</label><input id="bid-company" name="company" type="text" autocomplete="organization" /></div>
+    <div class="field"><label for="bid-phone">Phone</label><input id="bid-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required /></div>
+    <div class="field"><label for="bid-email">Email</label><input id="bid-email" name="email" type="email" autocomplete="email" /></div>
+    <div class="field">
+      <label for="bid-service">What do you need?</label>
+      <select id="bid-service" name="service" required>
+        <option value="">Choose one</option>
+        {services.map((s) => <option value={s.name}>{s.name}</option>)}
+        <option value="Several services / not sure">Several services / not sure</option>
+      </select>
+    </div>
+    <div class="field"><label for="bid-where">Where is the location?</label><input id="bid-where" name="location" type="text" placeholder="County and state, or lease name" required /></div>
+    <div class="field">
+      <label for="bid-when">When does it need to happen?</label>
+      <select id="bid-when" name="timing">
+        <option>As soon as possible</option>
+        <option>Within 2 weeks</option>
+        <option>Within 30 days</option>
+        <option>Pricing it for later</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="bid-reply">Best way to reach you</label>
+      <select id="bid-reply" name="reply_by"><option>Phone call</option><option>Text</option><option>Email</option></select>
+    </div>
+    <div class="field full"><label for="bid-details">Details</label><textarea id="bid-details" name="details" placeholder="Size of the job, access, anything we should know before we call"></textarea></div>
+  </div>
+  <div class="bid__send">
+    <button class="btn btn--gold" type="submit">Send bid request</button>
+    <p class="legal">For a spill or anything urgent, call <a href={site.phoneHref}>{site.phone}</a> instead. We use what you send only to answer you. See our <a href="/privacy">privacy page</a>.</p>
+  </div>
+</form>
+
+<script is:inline>
+  (function () {
+    var f = document.querySelector('form.bid'); if (!f) return;
+    var get = function (k) { try { return sessionStorage.getItem(k) || ''; } catch (e) { return ''; } };
+    f.elements.lead_source.value = get('ah_src') || 'Direct';
+    f.elements.landing_page.value = get('ah_landing');
+    f.elements.sent_from.value = location.pathname;
+    // If they just used an estimator, carry the result along and pre-pick the service.
+    var est = get('ah_estimate'), svc = get('ah_estimate_service');
+    if (est) { f.elements.estimate.value = est; var box = f.querySelector('.bid__est'); box.querySelector('.bid__est-text').textContent = est; box.hidden = false; }
+    var want = new URLSearchParams(location.search).get('service') || svc;
+    if (want) Array.prototype.forEach.call(f.elements.service.options, function (o) { if (o.value === want) f.elements.service.value = want; });
+  })();
+</script>
+
+<style>
+  .bid { display: grid; gap: 22px; }
+  .bid__est { border: 1px solid var(--border-strong); border-left: 3px solid var(--gold-dark); border-radius: var(--radius); padding: 14px 16px; background: var(--field); }
+  .bid__est p { margin: 0; }
+  .bid__est-label { font-size: 0.76rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 4px !important; }
+  .bid__send { display: grid; gap: 14px; align-items: center; }
+  .bid__send .legal { margin: 0; }
+  .bid__send a { color: var(--accent); }
+  @media (min-width: 720px) { .bid__send { grid-template-columns: auto 1fr; gap: 22px; } }
+  @media (max-width: 719px) { .bid__send .btn { width: 100%; } }
+</style>

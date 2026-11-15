@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import Estimator from '../components/Estimator.astro';
+import CtaBand from '../components/CtaBand.astro';
+const faqs = [
+  { q: 'How close is the range to a real bid?', a: 'It is a planning number built from typical going rates and the size you enter. Ground conditions, haul distance for rock, clearing and access move the real price. A firm bid comes after we see the location.' },
+  { q: 'Why is it a range and not one number?', a: 'Because nobody can price dirt work to the dollar without seeing it. The range runs from a little under to a little over the worked-out figure so you can budget with some room.' },
+  { q: 'Why does it say my job needs a site visit?', a: 'Past a certain size, things a form cannot see decide the price: terrain, crossings, how far rock has to be hauled. For those jobs a guess would not help you, so we ask to look first.' },
+];
+const schema = [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }];
+---
+<Base title="Lease Road, Pad & Mowing Cost Estimators" description="Free oilfield cost estimators: get a price range for a lease road, a well pad, right-of-way mowing or weed spraying from the job size. No contact details needed." schema={schema}>
+  <section class="pagehead band plat">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li>Estimators</li></ol>
+      <h1>Price a job now</h1>
+      <p class="lede">Enter the size and see a price range right away. We do not ask who you are first.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap narrow"><Estimator /></div>
+  </section>
+  <section class="section section--alt">
+    <div class="wrap narrow">
+      <p class="eyebrow">About these numbers</p>
+      <h2>What the range means.</h2>
+      <div class="faq">{faqs.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
+    </div>
+  </section>
+  <CtaBand title="Want a firm number?" line="Send the location and we will come look at it. A firm bid costs you nothing." />
+</Base>

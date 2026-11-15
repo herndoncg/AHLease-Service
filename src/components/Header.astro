@@ -1,0 +1,60 @@
+---
+import { site } from '../data/site';
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const links = [
+  { href: '/services', label: 'Services' },
+  { href: '/estimators', label: 'Estimators' },
+  { href: '/service-areas', label: 'Service area' },
+  { href: '/about', label: 'About' },
+  { href: '/blog', label: 'Field notes' },
+];
+const on = (href: string) => path === href || path.startsWith(href + '/');
+---
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <a href="/" class="mark" aria-label="A&H Lease Services, home">
+      <span class="mark__ah">A&amp;H</span>
+      <span class="mark__rule" aria-hidden="true"></span>
+      <span class="mark__ls">Lease<br />Services</span>
+    </a>
+    <nav class="hdr__nav" aria-label="Main">
+      {links.map((l) => <a href={l.href} aria-current={on(l.href) ? 'page' : undefined}>{l.label}</a>)}
+    </nav>
+    <div class="hdr__act">
+      <a class="hdr__tel" href={site.phoneHref}>{site.phone}</a>
+      <a class="btn btn--gold hdr__bid" href="/request-a-bid">Request a bid</a>
+    </div>
+    <details class="menu">
+      <summary aria-label="Menu"><span aria-hidden="true"></span>Menu</summary>
+      <nav class="menu__panel" aria-label="Menu">
+        {links.map((l) => <a href={l.href} aria-current={on(l.href) ? 'page' : undefined}>{l.label}</a>)}
+        <a href="/request-a-bid">Request a bid</a>
+        <a href={site.phoneHref}>Call {site.phone}</a>
+      </nav>
+    </details>
+  </div>
+</header>
+
+<style>
+  .hdr { position: sticky; top: 0; z-index: 100; background: var(--green-deep); color: #f1f4f1; border-bottom: 1px solid rgba(212, 162, 0, 0.55); }
+  .hdr__in { display: flex; align-items: center; gap: 28px; min-height: 72px; }
+  .mark { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff; flex: none; }
+  .mark__ah { font-family: var(--font-display); font-stretch: 122%; font-weight: 750; font-size: 1.7rem; letter-spacing: -0.04em; line-height: 1; }
+  .mark__rule { width: 2px; height: 30px; background: var(--gold); }
+  .mark__ls { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; line-height: 1.35; }
+  .hdr__nav { display: flex; gap: 26px; margin-left: auto; }
+  .hdr__nav a { text-decoration: none; font-size: 0.95rem; font-weight: 500; padding: 8px 0; border-bottom: 2px solid transparent; color: #dfe7e2; }
+  .hdr__nav a:hover, .hdr__nav a[aria-current] { color: #fff; border-bottom-color: var(--gold); }
+  .hdr__act { display: flex; align-items: center; gap: 18px; }
+  .hdr__tel { text-decoration: none; font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 0.98rem; white-space: nowrap; }
+  .hdr__bid { min-height: 44px; padding: 0 20px; font-size: 0.9rem; }
+  .menu { display: none; margin-left: auto; }
+  .menu summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 4px; font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 0.86rem; letter-spacing: 0.12em; text-transform: uppercase; }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu summary span { width: 20px; height: 12px; border-top: 2px solid #fff; border-bottom: 2px solid #fff; }
+  .menu__panel { position: absolute; left: 0; right: 0; top: 100%; background: var(--green-deep); border-top: 1px solid rgba(255, 255, 255, 0.12); border-bottom: 2px solid var(--gold); padding: 6px var(--gutter) 18px; display: grid; }
+  .menu__panel a { text-decoration: none; padding: 15px 0; font-size: 1.08rem; font-weight: 500; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+  .menu__panel a:last-child { border-bottom: 0; }
+  @media (max-width: 1040px) { .hdr__tel { display: none; } }
+  @media (max-width: 860px) { .hdr__nav, .hdr__act { display: none; } .menu { display: block; } .hdr__in { min-height: 62px; } }
+</style>

@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { groups, byGroup } from '../../data/services';
+---
+<Base title="Oilfield Lease Services" description="Every service A&H Lease Services offers from Longview, TX: lease roads, pads, dirt work, fencing, right-of-way mowing, weed spraying, signs, markers, cleanup and spill response.">
+  <section class="pagehead band plat">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li>Services</li></ol>
+      <h1>Oilfield lease services</h1>
+      <p class="lede">Building locations, keeping them up, and answering the call when something goes wrong. Pick a service for what is included and when to call.</p>
+    </div>
+  </section>
+  {groups.map((g, i) => (
+    <section class={`section ${i % 2 ? 'section--alt' : ''}`}>
+      <div class="wrap">
+        <div class="ghead"><p class="eyebrow">{g.name}</p><h2>{g.line}</h2></div>
+        <div class="cards">
+          {byGroup(g.key).map((s) => (
+            <a class="card" href={`/services/${s.slug}`}>
+              <h3>{s.name}</h3>
+              <p>{s.short}</p>
+              <span class="card__go">Details <span aria-hidden="true">→</span></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+  <CtaBand />
+</Base>
+
+<style>
+  .ghead { max-width: 720px; margin-bottom: clamp(24px, 3vw, 38px); }
+  .ghead h2 { font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
+  .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
+  .card { display: flex; flex-direction: column; gap: 8px; padding: 24px 24px 20px; background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--green); border-radius: var(--radius-lg); text-decoration: none; transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease); }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(5, 42, 32, 0.16); }
+  .card h3 { margin: 0; }
+  .card p { margin: 0; color: var(--text-2); flex: 1; }
+  .card__go { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 0.86rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-deep); margin-top: 8px; }
+</style>
