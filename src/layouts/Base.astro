@@ -20,7 +20,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const canonical = new URL(path, site.url).href;
 // Google shows about 60 characters of a title and 155 of a description.
 const withName = `${title} | A&H Lease Services`;
-const fullTitle = title.includes('A&H') ? title : withName.length <= 60 ? withName : `${title} | A&H`;
+const fullTitle = title.includes('A&H') ? title : withName.length < 60 ? withName : `${title} | A&H`;
 const clip = (s: string, n: number) => (s.length <= n ? s : s.slice(0, s.lastIndexOf(' ', n - 1)).replace(/[,;:.\s]+$/, '') + '.');
 const description = clip(rawDescription, 158);
 const ogImage = new URL('/og-default.png', site.url).href;
