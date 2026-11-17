@@ -6,12 +6,13 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "node scripts/test-pricing.mjs"
+    "test": "node scripts/test-pricing.mjs && node scripts/test-operator.mjs && node scripts/test-games.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource-variable/archivo": "^5.2.0",
     "@fontsource-variable/public-sans": "^5.2.0",
+    "@netlify/blobs": "^11.1.9",
     "astro": "^7.3.8",
     "sharp": "^0.35.5"
   }

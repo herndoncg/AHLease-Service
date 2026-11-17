@@ -7,6 +7,7 @@ const links = [
   { href: '/service-areas/', label: 'Service area' },
   { href: '/about/', label: 'About' },
   { href: '/blog/', label: 'Field notes' },
+  { href: '/operator-school/', label: 'Operator School' },
 ];
 const on = (href: string) => { const h = href.replace(/\/$/, ''); return path === h || path.startsWith(h + '/'); };
 ---
@@ -42,8 +43,10 @@ const on = (href: string) => { const h = href.replace(/\/$/, ''); return path ==
   .mark__ah { font-family: var(--font-display); font-stretch: 122%; font-weight: 750; font-size: 1.7rem; letter-spacing: -0.04em; line-height: 1; }
   .mark__rule { width: 2px; height: 30px; background: var(--gold); }
   .mark__ls { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; line-height: 1.35; }
-  .hdr__nav { display: flex; gap: 26px; margin-left: auto; }
-  .hdr__nav a { text-decoration: none; font-size: 0.95rem; font-weight: 500; padding: 8px 0; border-bottom: 2px solid transparent; color: #dfe7e2; }
+  /* The header may run a little wider than the page so six menu links, the phone and the button fit on one line. */
+  .hdr > .wrap { max-width: 1400px; }
+  .hdr__nav { display: flex; gap: 22px; margin-left: auto; }
+  .hdr__nav a { white-space: nowrap; text-decoration: none; font-size: 0.95rem; font-weight: 500; padding: 8px 0; border-bottom: 2px solid transparent; color: #dfe7e2; }
   .hdr__nav a:hover, .hdr__nav a[aria-current] { color: #fff; border-bottom-color: var(--gold); }
   .hdr__act { display: flex; align-items: center; gap: 18px; }
   .hdr__tel { text-decoration: none; font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 0.98rem; white-space: nowrap; }
@@ -55,6 +58,8 @@ const on = (href: string) => { const h = href.replace(/\/$/, ''); return path ==
   .menu__panel { position: absolute; left: 0; right: 0; top: 100%; background: var(--green-deep); border-top: 1px solid rgba(255, 255, 255, 0.12); border-bottom: 2px solid var(--gold); padding: 6px var(--gutter) 18px; display: grid; }
   .menu__panel a { text-decoration: none; padding: 15px 0; font-size: 1.08rem; font-weight: 500; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
   .menu__panel a:last-child { border-bottom: 0; }
-  @media (max-width: 1040px) { .hdr__tel { display: none; } }
-  @media (max-width: 860px) { .hdr__nav, .hdr__act { display: none; } .menu { display: block; } .hdr__in { min-height: 62px; } }
+  /* Narrower screens: first the phone number steps aside, then the links fold into the Menu button. */
+  @media (max-width: 1260px) { .hdr__tel { display: none; } }
+  @media (max-width: 1090px) { .hdr__nav { display: none; } .menu { display: block; margin-left: 0; } .hdr__act { margin-left: auto; } }
+  @media (max-width: 860px) { .hdr__act { display: none; } .menu { margin-left: auto; } .hdr__in { min-height: 62px; } }
 </style>

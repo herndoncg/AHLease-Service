@@ -1,0 +1,208 @@
+---
+// Operator School: five small games built from the work A&H does (dozer, excavator, mowing, spraying,
+// hauling rock). Visitors can play as a guest, or sign in so their levels follow them to any device.
+// The games are in src/scripts/operator/. The sign-in rules are in netlify/functions/lib/operator-core.mjs.
+import Base from '../layouts/Base.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { GAMES } from '../scripts/operator/games.js';
+---
+<Base title="Operator School: Equipment Games" description="Learn to run the iron. Five free games from real lease work: level a pad with a dozer, dig a trench, mow right-of-way, spray weeds and haul rock. Earn stars and move up in rank.">
+  <section class="pagehead band plat">
+    <div class="wrap">
+      <ol class="crumbs"><li><a href="/">Home</a></li><li>Operator School</li></ol>
+      <h1>Operator School</h1>
+      <p class="lede">Five short games from the work we do every day. Push dirt, dig trench, mow right-of-way, spray weeds and haul rock. Earn stars and move up in rank.</p>
+    </div>
+  </section>
+
+  <section class="section ops" data-ops-hub>
+    <div class="wrap">
+      <div class="ops-me panel">
+        <div class="ops-me__rank">
+          <p class="eyebrow">Your rank</p>
+          <p class="ops-me__name" data-rank>Greenhorn</p>
+          <div class="ops-me__bar" aria-hidden="true"><span data-bar></span></div>
+          <p class="ops-me__stars"><strong data-stars>0 stars</strong> <span data-next></span></p>
+        </div>
+        <div class="ops-me__acct">
+          <div data-guest>
+            <p>Playing as a guest. Your levels are saved on this device only.</p>
+            <div class="btn-row">
+              <button class="btn btn--green" type="button" data-open-auth="login">Sign in</button>
+              <button class="btn btn--line" type="button" data-open-auth="signup">New operator</button>
+            </div>
+          </div>
+          <div data-member hidden>
+            <p>Signed in as <strong data-name></strong>. Your levels are saved to your account.</p>
+            <div class="btn-row">
+              <button class="btn btn--line" type="button" data-signout>Sign out</button>
+              <button class="ops-linkbtn" type="button" data-open-auth="delete">Delete my account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ops-grid">
+        {GAMES.map((g) => (
+          <article class="ops-card" data-game={g.id}>
+            <canvas class="ops-card__icon" data-icon={g.id} width="160" height="160" aria-hidden="true"></canvas>
+            <div class="ops-card__txt">
+              <p class="ops-card__machine">{g.machine} <span data-earned></span></p>
+              <h2>{g.name}</h2>
+              <p>{g.blurb}</p>
+            </div>
+            <div class="ops-levels" role="group" aria-label={`${g.name} levels`}>
+              {Array.from({ length: g.levels }, (_, i) => (
+                <button class="ops-lvl" type="button" data-level={i} disabled={i > 0}>
+                  <span class="ops-lvl__n">{i + 1}</span>
+                  <span class="ops-lvl__stars">{i > 0 ? 'Locked' : '☆☆☆'}</span>
+                </button>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="legal ops-fine">Just for fun. The games are simple on purpose and are not training for running real equipment. Works with touch, a mouse or the arrow keys.</p>
+    </div>
+  </section>
+
+  <CtaBand title="Need the real crew?" line="The games are practice. The dozer, the trench and the rock road are what we do for a living. Tell us where the location is." />
+
+  <!-- The play area. It covers the whole screen while a game is open. -->
+  <div class="ops-stage" data-ops-stage hidden role="dialog" aria-modal="true" aria-label="Operator School game">
+    <div class="ops-top">
+      <button class="ops-exit" type="button" data-exit>Exit</button>
+      <p class="ops-title"><strong data-title></strong><span data-lvl></span></p>
+      <div class="ops-hud" data-hud aria-live="off"></div>
+    </div>
+    <div class="ops-view" data-view>
+      <canvas aria-label="Game picture"></canvas>
+      <div class="ops-over" data-over hidden></div>
+    </div>
+    <div class="ops-pad" data-pad></div>
+  </div>
+
+  <!-- Sign in, create an account, or delete an account. -->
+  <dialog class="ops-auth" data-ops-auth aria-labelledby="ops-auth-title">
+    <form novalidate>
+      <h2 id="ops-auth-title" data-auth-title>Sign in</h2>
+      <div class="ops-tabs" data-tabs>
+        <button type="button" data-mode="login" aria-selected="true">Sign in</button>
+        <button type="button" data-mode="signup" aria-selected="false">New operator</button>
+      </div>
+      <p class="ops-auth__note" data-auth-note></p>
+      <div class="field" data-name-field>
+        <label for="ops-username">Operator name</label>
+        <input id="ops-username" name="username" type="text" autocomplete="username" autocapitalize="off" spellcheck="false" maxlength="20" />
+        <small>A nickname, not your real name. 3 to 20 letters or numbers.</small>
+      </div>
+      <div class="field">
+        <label for="ops-password">Password</label>
+        <input id="ops-password" name="password" type="password" autocomplete="current-password" maxlength="100" />
+        <small>At least 8 characters. Do not reuse one from your bank or email.</small>
+      </div>
+      <div class="hp" aria-hidden="true"><label>Leave this empty <input name="website" type="text" tabindex="-1" autocomplete="off" /></label></div>
+      <p class="ops-auth__msg" data-msg role="alert" hidden></p>
+      <div class="btn-row">
+        <button class="btn btn--gold" type="submit" data-submit>Sign in</button>
+        <button class="btn btn--line" type="button" data-close>Cancel</button>
+      </div>
+      <p class="legal">We keep your operator name and your levels, nothing else. Your password is scrambled before it is saved, so nobody can read it, including us. There is no email on file, so a forgotten password cannot be reset. <a href="/privacy/">Privacy</a></p>
+    </form>
+  </dialog>
+</Base>
+
+<script>
+  import '../scripts/operator/app.js';
+</script>
+
+<style is:global>
+  /* ---- the games list ---- */
+  .ops-me { display: grid; gap: 22px 40px; grid-template-columns: 1fr; margin-bottom: clamp(22px, 3vw, 34px); }
+  @media (min-width: 820px) { .ops-me { grid-template-columns: 1.1fr 1fr; align-items: center; } }
+  .ops-me .eyebrow { margin-bottom: 8px; }
+  .ops-me__name { font-family: var(--font-display); font-stretch: 116%; font-weight: 700; font-size: clamp(1.9rem, 4vw, 2.7rem); letter-spacing: -0.03em; line-height: 1; margin: 0 0 14px; color: var(--green); }
+  .ops-me__bar { height: 10px; background: var(--field); border: 1px solid var(--border-strong); border-radius: 99px; overflow: hidden; }
+  .ops-me__bar span { display: block; height: 100%; width: 0; background: var(--green); transition: width 0.5s var(--ease); }
+  .ops-me__stars { margin: 10px 0 0; font-size: 0.95rem; color: var(--text-2); }
+  .ops-me__acct p { margin: 0 0 14px; }
+  .ops-linkbtn { background: none; border: 0; padding: 8px 4px; font: inherit; font-size: 0.9rem; color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; align-self: center; }
+
+  .ops-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 900px) { .ops-grid { grid-template-columns: 1fr 1fr; gap: 18px; } }
+  .ops-card { display: grid; grid-template-columns: 76px 1fr; gap: 12px 16px; align-items: center; background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--green); border-radius: var(--radius-lg); padding: 16px 16px 14px; }
+  .ops-card__icon { width: 76px; height: 76px; border-radius: 8px; border: 1px solid var(--border-strong); }
+  .ops-card__machine { display: flex; justify-content: space-between; gap: 10px; margin: 0 0 4px; font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-2); }
+  .ops-card__machine span { letter-spacing: 0.04em; text-transform: none; color: var(--muted); white-space: nowrap; }
+  .ops-card h2 { font-size: 1.28rem; margin: 0 0 4px; }
+  .ops-card__txt p:last-child { margin: 0; font-size: 0.93rem; line-height: 1.4; color: var(--text-2); }
+  .ops-levels { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+  .ops-lvl { display: grid; justify-items: center; gap: 1px; min-height: 58px; padding: 6px 2px; border-radius: var(--radius); border: 1.5px solid var(--border-strong); background: var(--field); color: var(--ink); font: inherit; cursor: pointer; transition: background 0.15s, border-color 0.15s; }
+  .ops-lvl__n { font-family: var(--font-display); font-stretch: 112%; font-weight: 700; font-size: 1.2rem; line-height: 1.1; }
+  .ops-lvl__stars { font-size: 0.82rem; letter-spacing: 0.04em; color: var(--green-deep); line-height: 1.2; }
+  .ops-lvl:hover:not(:disabled) { border-color: var(--green-deep); background: #e0e3de; }
+  .ops-lvl.is-next { background: var(--gold); border-color: var(--gold-dark); }
+  .ops-lvl.is-next .ops-lvl__stars { color: var(--ink); }
+  .ops-lvl.is-done { background: var(--green); border-color: var(--green-deep); color: #fff; }
+  .ops-lvl.is-done .ops-lvl__stars { color: #f3cf4d; }
+  .ops-lvl:disabled { cursor: not-allowed; background: transparent; border-style: dashed; color: var(--muted); }
+  .ops-lvl:disabled .ops-lvl__stars { font-size: 0.7rem; letter-spacing: 0; color: var(--muted); }
+  .ops-fine { margin: 18px 0 0; }
+
+  /* ---- the play area (covers the screen) ---- */
+  .ops-playing, .ops-playing body { overflow: hidden; }
+  .ops-stage, .ops-stage button, .ops-lvl, .ops-auth button { -webkit-tap-highlight-color: transparent; }
+  .ops-stage { position: fixed; inset: 0; z-index: 500; display: flex; flex-direction: column; height: 100vh; height: 100dvh; background: #071b15; color: #f1f4f1; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; overscroll-behavior: contain; }
+  .ops-top { flex: none; display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items: center; padding: 10px 14px; padding-top: max(10px, env(safe-area-inset-top)); background: var(--green-deep); border-bottom: 1px solid rgba(212, 162, 0, 0.55); }
+  .ops-exit { min-height: 40px; padding: 0 16px; border-radius: var(--radius); border: 1.5px solid rgba(241, 244, 241, 0.4); background: transparent; color: #fff; font-family: var(--font-display); font-stretch: 112%; font-weight: 650; font-size: 0.9rem; cursor: pointer; }
+  .ops-title { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; min-width: 0; }
+  .ops-title strong { font-family: var(--font-display); font-stretch: 112%; font-weight: 650; font-size: 1.05rem; }
+  .ops-title span { font-size: 0.85rem; color: #a9b9b0; }
+  .ops-hud { grid-column: 1 / -1; display: flex; gap: 8px; }
+  .ops-stat { flex: 1 1 0; min-width: 0; display: grid; padding: 5px 10px; border-radius: var(--radius); background: rgba(0, 0, 0, 0.26); border: 1px solid rgba(241, 244, 241, 0.12); }
+  .ops-stat span { font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: #a9b9b0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ops-stat strong { font-family: var(--font-display); font-stretch: 112%; font-weight: 700; font-size: 1.08rem; line-height: 1.2; white-space: nowrap; }
+  .ops-stat.is-warn { border-color: #d46a5f; } .ops-stat.is-warn strong { color: #ffb4a8; }
+  .ops-view { position: relative; flex: 1 1 auto; min-height: 0; }
+  .ops-view canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; max-width: none; }
+  .ops-over { position: absolute; inset: 0; display: flex; padding: 14px; background: rgba(5, 27, 21, 0.8); overflow-y: auto; touch-action: pan-y; }
+  .ops-over__card { margin: auto; width: 100%; max-width: 440px; display: grid; gap: 12px; padding: 22px; background: var(--card); color: var(--ink); border-top: 4px solid var(--gold); border-radius: 8px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4); }
+  .ops-over__card > * { margin: 0; }
+  .ops-over h2 { font-size: 1.7rem; color: var(--green); }
+  .ops-over__eyebrow { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: 0.76rem; letter-spacing: 0.15em; text-transform: uppercase; color: #36413b; }
+  .ops-over__stars { font-size: 2.5rem; line-height: 1; letter-spacing: 0.08em; color: var(--gold-dark); }
+  .ops-over__line { font-size: 1.02rem; line-height: 1.45; }
+  .ops-over__rank { font-family: var(--font-display); font-stretch: 112%; font-weight: 700; font-size: 1.1rem; color: var(--green-deep); }
+  .ops-over__tip { font-size: 0.92rem; line-height: 1.45; color: #26302b; border-left: 3px solid var(--gold-dark); padding-left: 12px; }
+  .ops-over__note { font-size: 0.82rem; line-height: 1.4; color: #36413b; }
+  .ops-how { list-style: none; padding: 0; display: grid; gap: 9px; font-size: 1rem; line-height: 1.4; }
+  .ops-how li { position: relative; padding-left: 20px; }
+  .ops-how li::before { content: ''; position: absolute; left: 0; top: 0.5em; width: 9px; height: 9px; background: var(--gold-dark); border-radius: 2px; }
+  .ops-over .btn { min-height: 50px; padding: 0 20px; flex: 1 1 auto; }
+  .ops-over .btn--line { border-color: rgba(5, 42, 32, 0.5); color: var(--ink); }
+
+  .ops-pad { flex: none; display: grid; gap: 8px; padding: 10px 14px; padding-bottom: max(12px, env(safe-area-inset-bottom)); background: var(--green-deep); border-top: 1px solid rgba(241, 244, 241, 0.14); }
+  .ops-pad--dpad { grid-template-columns: repeat(3, minmax(0, 104px)); grid-template-areas: '. up .' 'left down right'; justify-content: center; }
+  .ops-pad--one { grid-template-columns: minmax(0, 520px); justify-content: center; }
+  .ops-pad--two { grid-template-columns: repeat(2, minmax(0, 300px)); justify-content: center; }
+  .ops-key { min-height: 62px; border-radius: 8px; border: 2px solid var(--gold); background: #0a4635; color: #fff; font-family: var(--font-display); font-stretch: 112%; font-weight: 700; font-size: 1.05rem; letter-spacing: 0.04em; cursor: pointer; touch-action: none; }
+  .ops-arrow { display: block; width: 0; height: 0; margin: 0 auto; border-left: 13px solid transparent; border-right: 13px solid transparent; border-bottom: 20px solid currentColor; pointer-events: none; }
+  .ops-key--right .ops-arrow { transform: rotate(90deg); } .ops-key--down .ops-arrow { transform: rotate(180deg); } .ops-key--left .ops-arrow { transform: rotate(-90deg); }
+  .ops-pad--one .ops-key, .ops-pad--two .ops-key { min-height: 84px; font-size: 1.2rem; }
+  .ops-key--up { grid-area: up; } .ops-key--left { grid-area: left; } .ops-key--right { grid-area: right; } .ops-key--down { grid-area: down; }
+  .ops-key.is-down { background: var(--gold); color: var(--ink); transform: translateY(1px); }
+  @media (max-height: 560px) { .ops-key { min-height: 46px; } .ops-pad--one .ops-key, .ops-pad--two .ops-key { min-height: 54px; } .ops-top { padding-top: 6px; padding-bottom: 6px; } }
+
+  /* ---- sign in ---- */
+  .ops-auth { width: min(460px, calc(100vw - 28px)); max-height: calc(100dvh - 28px); padding: 0; border: 0; border-top: 4px solid var(--gold); border-radius: 8px; background: var(--card); color: var(--ink); box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45); }
+  .ops-auth::backdrop { background: rgba(5, 27, 21, 0.78); }
+  .ops-auth form { display: grid; gap: 14px; padding: clamp(20px, 5vw, 30px); }
+  .ops-auth h2 { font-size: 1.6rem; margin: 0; }
+  .ops-auth__note { margin: 0; font-size: 0.97rem; color: var(--text-2); }
+  .ops-auth__msg { margin: 0; padding: 10px 12px; border-radius: var(--radius); background: #e6cfcb; border: 1.5px solid var(--danger); color: #5e120e; font-weight: 600; font-size: 0.95rem; }
+  .ops-auth .legal { margin: 0; }
+  .ops-auth .legal a { color: var(--green-deep); }
+  .ops-tabs { display: grid; grid-template-columns: 1fr 1fr; border: 1.5px solid var(--border-strong); border-radius: var(--radius); overflow: hidden; }
+  .ops-tabs button { min-height: 46px; border: 0; background: var(--field); color: var(--ink); font-family: var(--font-display); font-stretch: 112%; font-weight: 650; font-size: 0.95rem; cursor: pointer; }
+  .ops-tabs button[aria-selected='true'] { background: var(--green); color: #fff; }
+</style>
