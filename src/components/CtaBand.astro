@@ -1,9 +1,11 @@
 ---
 import { site } from '../data/site';
-interface Props { title?: string; line?: string }
-const { title = 'Have a location that needs work?', line = 'Tell us where it is and what it needs. You will hear back from a person, not a call center.' } = Astro.props;
+import Horizon from './Horizon.astro';
+// scene: show the far-off jobsite animation along the bottom of this band (on by default).
+interface Props { title?: string; line?: string; scene?: boolean }
+const { title = 'Have a location that needs work?', line = 'Tell us where it is and what it needs. You will hear back from a person, not a call center.', scene = true } = Astro.props;
 ---
-<section class="cta band plat">
+<section class={`cta band plat ${scene ? 'cta--scene' : ''}`}>
   <div class="wrap cta__in">
     <div>
       <h2>{title}</h2>
@@ -14,10 +16,13 @@ const { title = 'Have a location that needs work?', line = 'Tell us where it is 
       <a class="btn btn--line" href={site.phoneHref}>Call {site.phone}</a>
     </div>
   </div>
+  {scene && <Horizon />}
 </section>
 
 <style>
   .cta { padding: clamp(48px, 6.5vw, 84px) 0; }
+  .cta--scene { padding-bottom: 0; overflow: hidden; }
+  .cta--scene .cta__in { padding-bottom: clamp(24px, 3.5vw, 44px); }
   .cta__in { display: grid; gap: 26px; align-items: center; }
   .cta h2 { margin-bottom: 0.35em; }
   .cta .lede { margin: 0; }

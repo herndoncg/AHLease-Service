@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import StatesMap from '../components/StatesMap.astro';
+import Horizon from '../components/Horizon.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site } from '../data/site';
 import { services, groups, byGroup } from '../data/services';
@@ -25,7 +26,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       <div class="hero__copy">
         <p class="eyebrow">Longview, Texas · Oilfield lease services</p>
         <h1>The road in, the pad, and everything that keeps a location working.</h1>
-        <p class="lede">A&amp;H builds and maintains oilfield locations across Texas, Louisiana, Arkansas and Oklahoma. One crew and one number to call.</p>
+        <p class="lede">A&amp;H builds and maintains oilfield locations across Texas, Louisiana, Arkansas and Oklahoma. One crew with its own equipment, and one number to call.</p>
         <div class="btn-row">
           <a class="btn btn--gold" href="/request-a-bid">Request a bid</a>
           <a class="btn btn--line" href="/estimators">Price a job now</a>
@@ -86,7 +87,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       <ol class="steps">
         <li><h3>A person answers</h3><p>You talk to the people who will be on the job. Tell us the county, the lease and what it needs.</p></li>
         <li><h3>We look before we price</h3><p>For anything beyond a simple cut or a small repair, we walk the location and bid it from what is there.</p></li>
-        <li><h3>Our crew on the job</h3><p>The work is done by our own hands, with the right equipment brought in for what the location needs.</p></li>
+        <li><h3>Our crew, our equipment</h3><p>The work is done by our own hands with our own equipment. If a job calls for a machine we do not have on hand, we bring one in.</p></li>
         <li><h3>Left in order</h3><p>Gates closed, ruts dressed, trash hauled off. The landowner should have nothing to call you about.</p></li>
       </ol>
     </div>
@@ -119,6 +120,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       </div>
       <StatesMap />
     </div>
+    <Horizon />
   </section>
 
   <section class="section">
@@ -129,7 +131,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
     </div>
   </section>
 
-  <CtaBand />
+  <CtaBand scene={false} />
 </Base>
 
 <style>
@@ -198,6 +200,8 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
   .pricing__list a:hover span { text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--gold-dark); }
   @media (min-width: 900px) { .pricing { grid-template-columns: 1fr 1fr; } }
 
+  .area { padding-bottom: 0; overflow: hidden; }
+  .area > .wrap { padding-bottom: clamp(28px, 4vw, 52px); }
   .area .textlink { color: #fff; }
   .area .smap { max-width: 520px; justify-self: center; width: 100%; }
 </style>

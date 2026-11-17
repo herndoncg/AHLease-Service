@@ -61,15 +61,15 @@ export const services: Service[] = [
   },
   {
     slug: 'general-dirt-work', name: 'General Dirt Work', nav: 'Dirt work', group: 'build',
-    short: 'Excavation, grading, backfill and haul-off.',
+    short: 'Excavation, grading, backfill and haul-off with our own equipment.',
     title: 'Oilfield Dirt Work & Excavation, East Texas',
     description: 'Oilfield dirt work from Longview, TX: excavation, grading, backfill, pit work, berms, drainage and material hauling.',
-    intro: 'Plenty of work on a lease does not fit a neat category. A line needs to be dug up and backfilled, a berm has to go around a battery, a pit needs closing, a washout needs filling. One call covers the digging, the hauling and the finish grade.',
+    intro: 'Plenty of work on a lease does not fit a neat category. A line needs to be dug up and backfilled, a berm has to go around a battery, a pit needs closing, a washout needs filling. We run our own equipment, so one call covers the digging, the hauling and the finish grade.',
     scope: ['Excavation and trenching', 'Finish grading and drainage work', 'Containment berms and firewalls', 'Pit digging, closing and backfill', 'Hauling rock, dirt and fill', 'Erosion repair and washouts'],
     when: 'If it involves moving dirt on or around a location, call. Small jobs are welcome.',
     faqs: [
       { q: 'Is there a minimum job size?', a: 'No job is too small to call about. Short jobs carry the cost of moving equipment, so it often pays to group a few items on the same lease into one trip.' },
-      { q: 'Can you haul material in and out?', a: 'Yes. We haul rock, select fill and spoil as part of the job.' },
+      { q: 'Can you haul material in and out?', a: 'Yes. We haul rock, select fill and spoil ourselves.' },
     ],
   },
   {
