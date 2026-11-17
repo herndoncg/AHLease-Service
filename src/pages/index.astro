@@ -9,7 +9,7 @@ const faqs = [
   { q: 'What does A&H Lease Services do?', a: 'We build and maintain oilfield locations: lease roads, pads, fencing and gates, right-of-way mowing, weed spraying, location signs, pipeline markers, pressure washing, jobsite cleanup, spill cleanup and general dirt work.' },
   { q: 'Where do you work?', a: 'We are based in Longview, Texas and work across East Texas, Louisiana, Arkansas and Oklahoma.' },
   { q: 'Can I get a price without a site visit?', a: 'Yes, for a planning number. The estimators on this site give a price range for lease roads, pads, mowing and weed spraying from the job size. A firm bid comes after we see the location.' },
-  { q: 'Do you take emergency calls?', a: 'Yes. Call 903-424-1607 any hour for a spill or a road or location that has to be opened up now.' },
+  { q: 'Do you take emergency calls?', a: 'Yes. Emergencies are answered 24 hours a day, 7 days a week at 903-424-1607. Normal office hours are Monday 10:30 to 4:00 and Tuesday through Friday 9:00 to 4:00.' },
 ];
 const schema = [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }];
 const num = (i: number) => String(i + 1).padStart(2, '0');
@@ -25,7 +25,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       <div class="hero__copy">
         <p class="eyebrow">Longview, Texas · Oilfield lease services</p>
         <h1>The road in, the pad, and everything that keeps a location working.</h1>
-        <p class="lede">A&amp;H builds and maintains oilfield locations across Texas, Louisiana, Arkansas and Oklahoma. One crew with its own equipment, and one number to call.</p>
+        <p class="lede">A&amp;H builds and maintains oilfield locations across Texas, Louisiana, Arkansas and Oklahoma. One crew and one number to call.</p>
         <div class="btn-row">
           <a class="btn btn--gold" href="/request-a-bid">Request a bid</a>
           <a class="btn btn--line" href="/estimators">Price a job now</a>
@@ -37,8 +37,8 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
         <dl>
           <div><dt>Home base</dt><dd>{site.city}, Texas</dd></div>
           <div><dt>Coverage</dt><dd>TX · LA · AR · OK</dd></div>
-          <div><dt>Call-out</dt><dd>24 hours, 7 days</dd></div>
-          <div><dt>Equipment</dt><dd>{site.equipment.map((e, i) => (i ? e.toLowerCase() : e)).join(', ')}</dd></div>
+          <div><dt>Emergency</dt><dd>24/7 call-out</dd></div>
+          <div><dt>Office hours</dt><dd>{site.hours.map((h) => <span class="sign__hrs">{h.label}</span>)}</dd></div>
           <div><dt>Dispatch</dt><dd><a href={site.phoneHref}>{site.phone}</a></dd></div>
         </dl>
       </aside>
@@ -86,7 +86,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
       <ol class="steps">
         <li><h3>A person answers</h3><p>You talk to the people who will be on the job. Tell us the county, the lease and what it needs.</p></li>
         <li><h3>We look before we price</h3><p>For anything beyond a simple cut or a small repair, we walk the location and bid it from what is there.</p></li>
-        <li><h3>Our crew, our iron</h3><p>The work is done by our own hands with our own dozer, backhoe, skid steer, roller and dump trucks.</p></li>
+        <li><h3>Our crew on the job</h3><p>The work is done by our own hands, with the right equipment brought in for what the location needs.</p></li>
         <li><h3>Left in order</h3><p>Gates closed, ruts dressed, trash hauled off. The landowner should have nothing to call you about.</p></li>
       </ol>
     </div>
@@ -160,6 +160,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
   .sign dt { font-family: var(--font-display); font-stretch: 112%; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; color: var(--muted); padding-top: 4px; }
   .sign dd { margin: 0; font-weight: 600; line-height: 1.35; }
   .sign a { color: var(--green-deep); text-underline-offset: 3px; }
+  .sign__hrs { display: block; }
   @media (min-width: 940px) { .hero__in { grid-template-columns: 1.25fr 0.75fr; } }
 
   .head { max-width: 760px; margin-bottom: clamp(28px, 4vw, 48px); }

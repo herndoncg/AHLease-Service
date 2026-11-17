@@ -17,7 +17,8 @@ import { site } from '../data/site';
       <aside class="reach">
         <h2>Or reach us directly</h2>
         <dl>
-          <div><dt>Call, any hour</dt><dd><a href={site.phoneHref}>{site.phone}</a>{site.phone2 && <><br /><a href={site.phone2Href}>{site.phone2}</a></>}</dd></div>
+          <div><dt>Call</dt><dd><a href={site.phoneHref}>{site.phone}</a>{site.phone2 && <><br /><a href={site.phone2Href}>{site.phone2}</a></>}</dd></div>
+          <div><dt>Hours</dt><dd class="reach__hrs">Emergencies: 24/7<br />{site.hours.map((h, i) => <>{i > 0 && <br />}{h.label}</>)}</dd></div>
           <div><dt>Email</dt><dd><a href={`mailto:${site.email}`}>{site.email}</a></dd></div>
           <div><dt>Based in</dt><dd>{site.city}, Texas</dd></div>
           <div><dt>Working in</dt><dd>{site.statesServed.join(', ')}</dd></div>
@@ -35,4 +36,5 @@ import { site } from '../data/site';
   .reach dt { font-family: var(--font-display); font-stretch: 112%; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; color: var(--muted); margin-bottom: 4px; }
   .reach dd { margin: 0; font-weight: 600; font-size: 1.08rem; }
   .reach dd a { color: var(--green-deep); text-underline-offset: 3px; }
+  .reach__hrs { font-size: 1rem !important; line-height: 1.5; }
 </style>

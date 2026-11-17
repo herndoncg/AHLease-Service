@@ -40,7 +40,10 @@ const business: Record<string, unknown> = {
   image: ogImage,
   address: { '@type': 'PostalAddress', addressLocality: site.city, addressRegion: site.state, addressCountry: 'US', ...(site.postalCode ? { postalCode: site.postalCode } : {}) },
   areaServed: site.statesServed.map((s) => ({ '@type': 'State', name: s })),
-  openingHoursSpecification: [{ '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '00:00', closes: '23:59' }],
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday'], opens: site.hours[0].open, closes: site.hours[0].close },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: site.hours[1].open, closes: site.hours[1].close },
+  ],
   hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Oilfield lease services', itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name, url: `${site.url}/services/${s.slug}` } })) },
 };
 ---

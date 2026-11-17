@@ -13,7 +13,7 @@ Built the same way as the CGH site (`herndoncg/CGH-Site`), with A&H's own colors
 | To change… | Edit |
 | --- | --- |
 | Estimator rates, minimums, the range, the "needs a site visit" sizes | Netlify > ahleaseservice > Project configuration > Environment variables > `ESTIMATOR_RATES` (the shape is explained at the top of `netlify/functions/lib/pricing.mjs`) |
-| Phones, email, verse, equipment list, "insured" switch | `src/data/business.json` |
+| Phones, email, hours, verse, "insured" switch | `src/data/business.json` |
 | Services (a page is generated for each) | `src/data/services.ts` |
 | Colors, fonts | `src/styles/tokens.css` |
 | Blog posts ("Field notes") | `src/content/blog/*.md` |

@@ -17,11 +17,13 @@ export const site = {
   city: business.city,
   state: business.state,
   postalCode: business.postalCode,
-  availability: business.availability,
+  // Emergencies are answered 24/7. Normal office hours are below (Colton set these Nov 16, 2026).
+  emergency: business.emergency,
+  hours: business.hours,
+  hoursLine: business.hours.map((h) => h.label).join(', '),
   // Flip to true in the content portal ONLY once a policy is active and Colton says to show it.
   insured: business.insured,
   statesServed: business.statesServed,
-  equipment: business.equipment,
   verse: business.verse,
   sister: business.sisterCompany,
   // Where the bid form sends leads. Netlify Forms collects them (Netlify > ahleaseservice > Forms > "bid").

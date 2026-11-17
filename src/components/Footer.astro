@@ -9,6 +9,7 @@ const year = new Date().getFullYear();
       <div class="ftr__id">
         <p class="ftr__name">A&amp;H Lease Services</p>
         <p class="ftr__where">{site.city}, Texas<br />Serving Texas, Louisiana, Arkansas and Oklahoma</p>
+        <p class="ftr__where">Emergencies: 24/7<br />{site.hours.map((h, i) => <>{i > 0 && <br />}{h.label}</>)}</p>
         <p class="ftr__contact">
           <a href={site.phoneHref}>{site.phone}</a>
           {site.phone2 && <a href={site.phone2Href}>{site.phone2}</a>}

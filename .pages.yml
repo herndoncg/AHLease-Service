@@ -11,7 +11,7 @@ media:
 
 content:
 - name: business
-  label: Business facts (phones, email, verse)
+  label: Business facts (phones, email, hours, verse)
   type: file
   path: src/data/business.json
   fields:
@@ -21,10 +21,18 @@ content:
   - { name: city, label: City, type: string }
   - { name: state, label: State, type: string }
   - { name: postalCode, label: ZIP code (optional), type: string }
-  - { name: availability, label: Availability line, type: string }
+  - { name: emergency, label: 'Emergency line (shows as: Emergencies: 24/7)', type: string }
+  - name: hours
+    label: Office hours (one row per group of days)
+    type: object
+    list: true
+    fields:
+    - { name: days, label: Days, type: string }
+    - { name: open, label: 'Opens (24-hour clock, like 09:00)', type: string }
+    - { name: close, label: 'Closes (24-hour clock, like 16:00)', type: string }
+    - { name: label, label: 'How it reads on the site', type: string }
   - { name: insured, label: 'Show "Insured" on the site (only when a policy is active)', type: boolean }
   - { name: statesServed, label: States served, type: string, list: true }
-  - { name: equipment, label: Equipment list, type: string, list: true }
   - name: verse
     label: Verse
     type: object

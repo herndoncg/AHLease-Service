@@ -5,10 +5,28 @@
   "city": "Longview",
   "state": "TX",
   "postalCode": "",
-  "availability": "24/7 call-out",
+  "emergency": "24/7",
+  "hours": [
+    {
+      "days": "Monday",
+      "open": "10:30",
+      "close": "16:00",
+      "label": "Monday 10:30 to 4:00"
+    },
+    {
+      "days": "Tuesday to Friday",
+      "open": "09:00",
+      "close": "16:00",
+      "label": "Tuesday to Friday 9:00 to 4:00"
+    }
+  ],
   "insured": false,
-  "statesServed": ["Texas", "Louisiana", "Arkansas", "Oklahoma"],
-  "equipment": ["Dozer", "Backhoe", "Skid steer", "Roller", "Two dump trucks"],
+  "statesServed": [
+    "Texas",
+    "Louisiana",
+    "Arkansas",
+    "Oklahoma"
+  ],
   "verse": {
     "text": "And whatsoever ye do, do it heartily, as to the Lord, and not unto men.",
     "ref": "Colossians 3:23"
