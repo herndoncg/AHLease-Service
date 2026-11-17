@@ -125,6 +125,18 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
     <Horizon />
   </section>
 
+  <!-- Jobsite Games teaser (Colton, Nov 17, 2026: the games should be easy for anyone to find). -->
+  <section class="section section--alt games-teaser">
+    <div class="wrap games-teaser__in">
+      <div>
+        <p class="eyebrow">Jobsite Games</p>
+        <h2>Think you can run the iron?</h2>
+        <p class="lede">Five free games: push dirt with a dozer, dig a trench, mow right-of-way, spray weeds and haul rock. No sign-up. Just play.</p>
+      </div>
+      <a class="btn btn--gold" href="/games/">Play the games</a>
+    </div>
+  </section>
+
   <section class="section">
     <div class="wrap narrow">
       <p class="eyebrow">Common questions</p>
@@ -137,6 +149,10 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
 </Base>
 
 <style>
+  .games-teaser { padding: clamp(40px, 5vw, 64px) 0; }
+  .games-teaser__in { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 40px; }
+  .games-teaser__in h2 { margin-bottom: 0.3em; }
+  .games-teaser__in .lede { margin: 0; }
   .hero { position: relative; isolation: isolate; padding: clamp(54px, 7.5vw, 110px) 0 0; overflow: hidden; }
   .hero__in { padding-bottom: clamp(22px, 3vw, 40px); }
   .hero__vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 42% 50%; z-index: -2; background: #073a2c; }

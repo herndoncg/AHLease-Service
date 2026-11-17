@@ -1,4 +1,4 @@
-// Operator School: the page around the games.
+// Jobsite Games (/games/): the page around the games.
 // - shows each game's levels and stars, and the player's rank
 // - opens a game full screen, shows the "how to play" card and the result card
 // - signs a player in or out and keeps their levels
@@ -118,7 +118,7 @@ function showResult(game, level, result) {
     after > before ? el('p', 'ops-over__rank', `New rank: ${RANKS[after][1]}`) : null,
     result.won ? el('p', 'ops-over__tip', game.tip) : null,
     row,
-    result.won && !user ? el('p', 'ops-over__note', 'Playing as a guest: these stars are saved on this device only. Sign in from the games list to keep them.') : null,
+    result.won && !user ? el('p', 'ops-over__note', 'Your stars are saved on this device. Sign in from the games list if you want your rank to follow you to other devices.') : null,
   ]);
 }
 
@@ -139,7 +139,7 @@ window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && current) c
 const dialog = $('[data-ops-auth]'), form = $('form', dialog), msg = $('[data-msg]', dialog), nameField = $('[data-name-field]', dialog);
 const COPY = {
   login: { title: 'Sign in', button: 'Sign in', auto: 'current-password', note: 'Signing in brings your levels to this device.' },
-  signup: { title: 'New operator', button: 'Create my account', auto: 'new-password', note: 'Pick a nickname and a password. That is all we ask for.' },
+  signup: { title: 'New player', button: 'Create my account', auto: 'new-password', note: 'Pick a nickname and a password. That is all we ask for.' },
   delete: { title: 'Delete my account', button: 'Delete it for good', auto: 'current-password', note: 'This removes your operator name and every saved level. It cannot be undone. Type your password to confirm.' },
 };
 let mode = 'login';

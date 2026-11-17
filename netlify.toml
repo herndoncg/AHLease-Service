@@ -15,6 +15,15 @@
   force = true
 
 # The old one-page site used #calculators and "contact". Old links still land somewhere useful.
+# The games page was first called Operator School (Nov 17, 2026). Old links still work.
+[[redirects]]
+  from = "/operator-school"
+  to = "/games/"
+  status = 301
+[[redirects]]
+  from = "/operator-school/*"
+  to = "/games/"
+  status = 301
 [[redirects]]
   from = "/calculators"
   to = "/estimators/"
