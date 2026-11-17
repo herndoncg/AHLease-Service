@@ -1,4 +1,4 @@
-// Operator School: the shared parts every game uses.
+// Jobsite Games: the shared parts every game uses.
 // - Stage: the full-screen play area (the picture, the buttons under it, the numbers on top).
 // - Drawing helpers: the machines, drawn from simple shapes in A&H colors.
 // Nothing here talks to the server.

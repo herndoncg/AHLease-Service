@@ -1,21 +1,23 @@
 ---
-// Operator School: five small games built from the work A&H does (dozer, excavator, mowing, spraying,
-// hauling rock). Visitors can play as a guest, or sign in so their levels follow them to any device.
+// Jobsite Games (at /games/; it used to be called Operator School): five small games built from the work A&H
+// does (dozer, excavator, mowing, spraying, hauling rock). Open to everyone. No sign-in needed to play;
+// signing in only keeps a player's levels and rank on their account so they follow them to any device.
 // The games are in src/scripts/operator/. The sign-in rules are in netlify/functions/lib/operator-core.mjs.
 import Base from '../layouts/Base.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { GAMES } from '../scripts/operator/games.js';
 ---
-<Base title="Operator School: Equipment Games" description="Learn to run the iron. Five free games from real lease work: level a pad with a dozer, dig a trench, mow right-of-way, spray weeds and haul rock. Earn stars and move up in rank.">
+<Base title="Jobsite Games: Dozer, Excavator & More" description="Free games, no sign-up: push dirt with a dozer, dig a trench, mow right-of-way, spray weeds and haul rock. Earn stars, climb the ranks and see how you stack up.">
   <section class="pagehead band plat">
     <div class="wrap">
-      <ol class="crumbs"><li><a href="/">Home</a></li><li>Operator School</li></ol>
-      <h1>Operator School</h1>
-      <p class="lede">Five short games from the work we do every day. Push dirt, dig trench, mow right-of-way, spray weeds and haul rock. Earn stars and move up in rank.</p>
+      <ol class="crumbs"><li><a href="/">Home</a></li><li>Games</li></ol>
+      <h1>Jobsite Games</h1>
+      <p class="lede">Push dirt, dig trench, mow right-of-way, spray weeds and haul rock. Free to play, no sign-up. Pick a machine and go.</p>
+      <div class="btn-row"><a class="btn btn--gold" href="#play">Play now</a></div>
     </div>
   </section>
 
-  <section class="section ops" data-ops-hub>
+  <section class="section ops" id="play" data-ops-hub>
     <div class="wrap">
       <div class="ops-me panel">
         <div class="ops-me__rank">
@@ -26,10 +28,10 @@ import { GAMES } from '../scripts/operator/games.js';
         </div>
         <div class="ops-me__acct">
           <div data-guest>
-            <p>Playing as a guest. Your levels are saved on this device only.</p>
+            <p>No sign-in needed. Just pick a game. Want your rank saved so it follows you to any phone? Sign in or make a free account.</p>
             <div class="btn-row">
               <button class="btn btn--green" type="button" data-open-auth="login">Sign in</button>
-              <button class="btn btn--line" type="button" data-open-auth="signup">New operator</button>
+              <button class="btn btn--line" type="button" data-open-auth="signup">New player</button>
             </div>
           </div>
           <div data-member hidden>
@@ -62,14 +64,14 @@ import { GAMES } from '../scripts/operator/games.js';
           </article>
         ))}
       </div>
-      <p class="legal ops-fine">Just for fun. The games are simple on purpose and are not training for running real equipment. Works with touch, a mouse or the arrow keys.</p>
+      <p class="legal ops-fine">Just for fun, not training for running real equipment. Works with touch, a mouse or the arrow keys. Without signing in, your stars stay on this device only.</p>
     </div>
   </section>
 
-  <CtaBand title="Need the real crew?" line="The games are practice. The dozer, the trench and the rock road are what we do for a living. Tell us where the location is." />
+  <CtaBand title="Need the real crew?" line="The dozer, the trench and the rock road are what we do for a living. Tell us where the location is." />
 
   <!-- The play area. It covers the whole screen while a game is open. -->
-  <div class="ops-stage" data-ops-stage hidden role="dialog" aria-modal="true" aria-label="Operator School game">
+  <div class="ops-stage" data-ops-stage hidden role="dialog" aria-modal="true" aria-label="Jobsite game">
     <div class="ops-top">
       <button class="ops-exit" type="button" data-exit>Exit</button>
       <p class="ops-title"><strong data-title></strong><span data-lvl></span></p>
@@ -88,7 +90,7 @@ import { GAMES } from '../scripts/operator/games.js';
       <h2 id="ops-auth-title" data-auth-title>Sign in</h2>
       <div class="ops-tabs" data-tabs>
         <button type="button" data-mode="login" aria-selected="true">Sign in</button>
-        <button type="button" data-mode="signup" aria-selected="false">New operator</button>
+        <button type="button" data-mode="signup" aria-selected="false">New player</button>
       </div>
       <p class="ops-auth__note" data-auth-note></p>
       <div class="field" data-name-field>
