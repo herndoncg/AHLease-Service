@@ -32,6 +32,30 @@ If that setting is missing, the estimators say "call us" instead of showing a pr
 
 Check the math any time: `npm test`
 
+## Operator School (the games at /operator-school)
+
+Five small games (dozer, excavator, mowing, spraying, hauling rock), 5 levels each, up to 3 stars a level.
+
+| To change… | Edit |
+| --- | --- |
+| How hard a level is | the `..._LEVELS` list at the top of each game in `src/scripts/operator/games.js` |
+| The words (how to play, tips) | the same file, at the top of each game |
+| Rank names and the stars each needs | `RANKS` in `src/scripts/operator/app.js` |
+| The page layout and colors | `src/pages/operator-school.astro` |
+
+**Sign-in, in plain words.** Playing needs no account; a guest's levels stay in their own browser. An account is an
+operator name and a password, nothing else (no email, phone or real name).
+
+- The password is never stored. Only a one-way scrambled version is (scrypt with a random salt per player).
+- Signing in sets one cookie that page scripts cannot read (`HttpOnly`, `Secure`, `SameSite=Lax`). The server keeps only a fingerprint of it.
+- Accounts live in **Netlify Blobs** (private storage only this site's server code can open), in a box named `operator-school`.
+  Preview builds use a separate box, `operator-school-preview`, so tests never touch real players.
+- **There are no secret keys for this feature**, so nothing sensitive is in this code or in Netlify's settings.
+- Limits: 5 wrong passwords locks a name for 15 minutes; one visitor can try signing in 10 times a minute; 400 new accounts a day site-wide.
+- A player can delete their own account on the page. No email on file means a forgotten password cannot be reset.
+
+The rules are in `netlify/functions/lib/operator-core.mjs`. `npm test` checks them (and the estimator math).
+
 ## Forms
 
 Leads are collected by **Netlify Forms** (Netlify dashboard > ahleaseservice > Forms). The bid form is named `bid`.
