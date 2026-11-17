@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import StatesMap from '../components/StatesMap.astro';
+import Horizon from '../components/Horizon.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site } from '../data/site';
 import { services, groups, byGroup } from '../data/services';
@@ -14,7 +15,7 @@ const faqs = [
 const schema = [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }];
 const num = (i: number) => String(i + 1).padStart(2, '0');
 ---
-<Base title="A&H Lease Services | Oilfield Lease Services, Longview TX" description="Oilfield lease services from Longview, Texas: lease roads, pad construction, right-of-way mowing, weed spraying, fencing, signs and spill cleanup across TX, LA, AR and OK." schema={schema}>
+<Base intro title="A&H Lease Services | Oilfield Lease Services, Longview TX" description="Oilfield lease services from Longview, Texas: lease roads, pad construction, right-of-way mowing, weed spraying, fencing, signs and spill cleanup across TX, LA, AR and OK." schema={schema}>
   <section class="hero band plat">
     <div class="wrap hero__in">
       <div class="hero__copy">
@@ -38,6 +39,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
         </dl>
       </aside>
     </div>
+    <Horizon />
   </section>
 
   <section class="section">
@@ -119,7 +121,13 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
 </Base>
 
 <style>
-  .hero { padding: clamp(54px, 8vw, 118px) 0 clamp(52px, 7vw, 104px); }
+  .hero { padding: clamp(46px, 6vw, 84px) 0 0; overflow: hidden; }
+  .hero__in { padding-bottom: clamp(30px, 4vw, 56px); }
+  /* the words and the sign ease in once when the page opens */
+  .hero__copy > *, .sign { animation: rise 0.9s var(--ease) both; }
+  .hero__copy > :nth-child(2) { animation-delay: 0.08s; } .hero__copy > :nth-child(3) { animation-delay: 0.16s; } .hero__copy > :nth-child(4) { animation-delay: 0.24s; } .sign { animation-delay: 0.3s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero__copy > *, .sign { animation: none; } }
   .hero__in { display: grid; gap: clamp(34px, 5vw, 72px); align-items: center; }
   .hero h1 { max-width: 17ch; }
   .hero .lede { margin-bottom: 30px; }

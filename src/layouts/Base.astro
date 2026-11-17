@@ -13,9 +13,11 @@ interface Props {
   type?: 'website' | 'article';
   schema?: Record<string, unknown>[];
   noindex?: boolean;
+  /** Home page only: the short opening reveal, shown once per visit. */
+  intro?: boolean;
 }
 
-const { title, description: rawDescription, type = 'website', schema = [], noindex = false } = Astro.props;
+const { title, description: rawDescription, type = 'website', schema = [], noindex = false, intro = false } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const canonical = new URL(path, site.url).href;
 // Google shows about 60 characters of a title and 155 of a description.
@@ -90,6 +92,16 @@ const business: Record<string, unknown> = {
     </script>
   </head>
   <body>
+    {intro && (
+      <Fragment>
+        <!-- The opening reveal: the name, a gold line drawn across like a grade line, then the curtain lifts.
+             About 2 seconds, once per visit. It never blocks a tap, and it is skipped for reduce-motion. -->
+        <script is:inline>
+          try { if (!sessionStorage.getItem('ah_intro') && !matchMedia('(prefers-reduced-motion: reduce)').matches) { sessionStorage.setItem('ah_intro', '1'); document.documentElement.classList.add('ah-intro'); } } catch (e) {}
+        </script>
+        <div class="intro" aria-hidden="true"><div class="intro__in"><span class="intro__ah">A&amp;H</span><span class="intro__line"></span><span class="intro__ls">Lease Services</span></div></div>
+      </Fragment>
+    )}
     <a class="skip" href="#main">Skip to content</a>
     <Header />
     <main id="main"><slot /></main>
@@ -99,6 +111,17 @@ const business: Record<string, unknown> = {
       {!onBidPage && <a href="/request-a-bid" class="callbar__bid">Request a bid</a>}
     </nav>
 
+    <style is:global>
+      .intro { display: none; }
+      .ah-intro .intro { display: grid; place-items: center; position: fixed; inset: 0; z-index: 300; background: #073a2c; pointer-events: none; animation: intro-lift 0.7s cubic-bezier(0.7, 0, 0.2, 1) 1.45s both; }
+      .intro__in { display: grid; justify-items: center; gap: 16px; color: #fff; }
+      .intro__ah { font-family: var(--font-display); font-stretch: 122%; font-weight: 750; font-size: clamp(3.4rem, 12vw, 6.5rem); letter-spacing: -0.04em; line-height: 1; animation: intro-in 0.6s ease-out both; }
+      .intro__line { width: min(72vw, 420px); height: 3px; background: #d4a200; transform-origin: 0 50%; animation: intro-draw 0.9s cubic-bezier(0.6, 0, 0.2, 1) 0.2s both; }
+      .intro__ls { font-family: var(--font-display); font-stretch: 112%; font-weight: 600; font-size: clamp(0.85rem, 2.6vw, 1.15rem); letter-spacing: 0.34em; text-transform: uppercase; animation: intro-in 0.6s ease-out 0.5s both; }
+      @keyframes intro-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+      @keyframes intro-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+      @keyframes intro-lift { to { transform: translateY(-101%); visibility: hidden; } }
+    </style>
     <style>
       .callbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 90; display: none; padding-bottom: env(safe-area-inset-bottom); background: var(--green-deep); box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.2); border-top: 1px solid rgba(255, 255, 255, 0.12); }
       /* Solid green carries on below the bar, so the page never shows through under the buttons on
