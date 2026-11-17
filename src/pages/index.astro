@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import StatesMap from '../components/StatesMap.astro';
-import Horizon from '../components/Horizon.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site } from '../data/site';
 import { services, groups, byGroup } from '../data/services';
@@ -16,7 +15,12 @@ const schema = [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEnti
 const num = (i: number) => String(i + 1).padStart(2, '0');
 ---
 <Base intro title="A&H Lease Services | Oilfield Lease Services, Longview TX" description="Oilfield lease services from Longview, Texas: lease roads, pad construction, right-of-way mowing, weed spraying, fencing, signs and spill cleanup across TX, LA, AR and OK." schema={schema}>
-  <section class="hero band plat">
+  <section class="hero band">
+    <!-- Real footage behind the top of the page: three free stock clips of equipment at work (Pexels),
+         turned black and white, tinted green and joined into one loop. A dark green cover sits over it
+         so the words stay easy to read. Visitors with "reduce motion" on see a still picture instead. -->
+    <video class="hero__vid" autoplay muted loop playsinline preload="metadata" poster="/video/jobsite-poster.jpg" aria-hidden="true" tabindex="-1" disablepictureinpicture><source src="/video/jobsite.mp4" type="video/mp4" /></video>
+    <div class="hero__cover" aria-hidden="true"></div>
     <div class="wrap hero__in">
       <div class="hero__copy">
         <p class="eyebrow">Longview, Texas · Oilfield lease services</p>
@@ -39,8 +43,16 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
         </dl>
       </aside>
     </div>
-    <Horizon />
   </section>
+  <script is:inline>
+    (function () {
+      var v = document.querySelector('.hero__vid'); if (!v) return;
+      // Reduce motion: no moving video, just the still picture.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); return; }
+      // Stop the video when it is scrolled out of view, so it does not use battery or data for nothing.
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { if (e[0].isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause(); }, { threshold: 0.05 }).observe(v);
+    })();
+  </script>
 
   <section class="section">
     <div class="wrap">
@@ -121,8 +133,11 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
 </Base>
 
 <style>
-  .hero { padding: clamp(46px, 6vw, 84px) 0 0; overflow: hidden; }
-  .hero__in { padding-bottom: clamp(30px, 4vw, 56px); }
+  .hero { position: relative; isolation: isolate; padding: clamp(54px, 7.5vw, 110px) 0 clamp(52px, 7vw, 104px); overflow: hidden; }
+  .hero__vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 42% 50%; z-index: -2; background: #073a2c; }
+  /* The dark green cover over the footage: heaviest behind the words, lighter toward the right. */
+  .hero__cover { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(7, 58, 44, 0.5) 0%, rgba(7, 58, 44, 0) 22%, rgba(7, 58, 44, 0) 72%, rgba(7, 58, 44, 0.85) 100%), linear-gradient(90deg, rgba(7, 58, 44, 0.84) 0%, rgba(7, 58, 44, 0.7) 46%, rgba(7, 58, 44, 0.48) 100%); }
+  @media (max-width: 939px) { .hero__cover { background: linear-gradient(180deg, rgba(7, 58, 44, 0.8) 0%, rgba(7, 58, 44, 0.72) 60%, rgba(7, 58, 44, 0.88) 100%); } }
   /* the words and the sign ease in once when the page opens */
   .hero__copy > *, .sign { animation: rise 0.9s var(--ease) both; }
   .hero__copy > :nth-child(2) { animation-delay: 0.08s; } .hero__copy > :nth-child(3) { animation-delay: 0.16s; } .hero__copy > :nth-child(4) { animation-delay: 0.24s; } .sign { animation-delay: 0.3s; }
