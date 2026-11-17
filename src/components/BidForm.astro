@@ -4,7 +4,7 @@
 import { site } from '../data/site';
 import { services } from '../data/services';
 ---
-<form class="bid" name={site.bidFormName} method="POST" action="/thank-you" data-netlify="true" netlify-honeypot="bot-field">
+<form class="bid" name={site.bidFormName} method="POST" action="/thank-you/" data-netlify="true" netlify-honeypot="bot-field">
   <input type="hidden" name="form-name" value={site.bidFormName} />
   <!-- Spam trap: real visitors never see or fill this box. Netlify drops any submission where it is filled. -->
   <p class="hp"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
@@ -50,7 +50,7 @@ import { services } from '../data/services';
   </div>
   <div class="bid__send">
     <button class="btn btn--gold" type="submit">Send bid request</button>
-    <p class="legal">For a spill or anything urgent, call <a href={site.phoneHref}>{site.phone}</a> instead. We use what you send only to answer you. See our <a href="/privacy">privacy page</a>.</p>
+    <p class="legal">For a spill or anything urgent, call <a href={site.phoneHref}>{site.phone}</a> instead. We use what you send only to answer you. See our <a href="/privacy/">privacy page</a>.</p>
   </div>
 </form>
 

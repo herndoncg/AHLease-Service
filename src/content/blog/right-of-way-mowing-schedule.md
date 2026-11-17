@@ -20,4 +20,4 @@ Mowing cuts brush off. It does not kill it, and most brush comes back thicker. W
 
 ## What it costs
 
-Mowing is priced by the acre, which comes from the length and width of the right-of-way. The [mowing estimator](/estimators#mowing) gives a range from the miles and the width.
+Mowing is priced by the acre, which comes from the length and width of the right-of-way. The [mowing estimator](/estimators/#mowing) gives a range from the miles and the width.

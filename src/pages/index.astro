@@ -15,7 +15,7 @@ const faqs = [
 const schema = [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }];
 const num = (i: number) => String(i + 1).padStart(2, '0');
 ---
-<Base intro title="A&H Lease Services | Oilfield Lease Services, Longview TX" description="Oilfield lease services from Longview, Texas: lease roads, pad construction, right-of-way mowing, weed spraying, fencing, signs and spill cleanup across TX, LA, AR and OK." schema={schema}>
+<Base intro preloadImage="/video/jobsite-poster.jpg" title="A&H Lease Services | Oilfield Lease Services, Longview TX" description="Oilfield lease services from Longview, Texas: lease roads, pad construction, right-of-way mowing, weed spraying, fencing, signs and spill cleanup across TX, LA, AR and OK." schema={schema}>
   <section class="hero band">
     <!-- Real footage behind the top of the page: three free stock clips of equipment at work (Pexels),
          turned black and white, tinted green and joined into one loop. A dark green cover sits over it
@@ -28,8 +28,8 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
         <h1>The road in, the pad, and everything that keeps a location working.</h1>
         <p class="lede">A&amp;H builds and maintains oilfield locations across Texas, Louisiana, Arkansas and Oklahoma. One crew with its own equipment, and one number to call.</p>
         <div class="btn-row">
-          <a class="btn btn--gold" href="/request-a-bid">Request a bid</a>
-          <a class="btn btn--line" href="/estimators">Price a job now</a>
+          <a class="btn btn--gold" href="/request-a-bid/">Request a bid</a>
+          <a class="btn btn--line" href="/estimators/">Price a job now</a>
         </div>
       </div>
       <!-- Laid out like a lease sign at a location entrance: plain facts, nothing claimed that is not confirmed. -->
@@ -70,7 +70,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
             <div class="ledger__head"><h3>{g.name}</h3><p>{g.line}</p></div>
             <ul>
               {byGroup(g.key).map((s) => (
-                <li><a href={`/services/${s.slug}`}><span class="ledger__n">{num(services.indexOf(s))}</span><span class="ledger__name">{s.nav}</span><span class="ledger__short">{s.short}</span><span class="ledger__go" aria-hidden="true">→</span></a></li>
+                <li><a href={`/services/${s.slug}/`}><span class="ledger__n">{num(services.indexOf(s))}</span><span class="ledger__name">{s.nav}</span><span class="ledger__short">{s.short}</span><span class="ledger__go" aria-hidden="true">→</span></a></li>
               ))}
             </ul>
           </div>
@@ -101,13 +101,13 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
         <p class="eyebrow">Estimators</p>
         <h2>See a price range before you ever pick up the phone.</h2>
         <p class="lede">Enter the size of a lease road, a pad, a right-of-way or a spray job and get a range on the spot. No name or email asked first.</p>
-        <a class="btn btn--green" href="/estimators">Open the estimators</a>
+        <a class="btn btn--green" href="/estimators/">Open the estimators</a>
       </div>
       <ul class="pricing__list">
-        <li><a href="/estimators#road"><span>Lease road</span><em>By length, width and rock depth</em></a></li>
-        <li><a href="/estimators#pad"><span>Pad</span><em>By length, width and rock depth</em></a></li>
-        <li><a href="/estimators#mowing"><span>Right-of-way mowing</span><em>By the mile or the acre</em></a></li>
-        <li><a href="/estimators#spraying"><span>Weed spraying</span><em>By the mile or the acre</em></a></li>
+        <li><a href="/estimators/#road"><span>Lease road</span><em>By length, width and rock depth</em></a></li>
+        <li><a href="/estimators/#pad"><span>Pad</span><em>By length, width and rock depth</em></a></li>
+        <li><a href="/estimators/#mowing"><span>Right-of-way mowing</span><em>By the mile or the acre</em></a></li>
+        <li><a href="/estimators/#spraying"><span>Weed spraying</span><em>By the mile or the acre</em></a></li>
       </ul>
     </div>
   </section>
@@ -118,7 +118,7 @@ const num = (i: number) => String(i + 1).padStart(2, '0');
         <p class="eyebrow">Service area</p>
         <h2>Out of Longview, across four states.</h2>
         <p class="lede">East Texas is home. We travel for work in Louisiana, Arkansas and Oklahoma, and price mobilization honestly so there are no surprises.</p>
-        <a class="textlink" href="/service-areas">See where we work</a>
+        <a class="textlink" href="/service-areas/">See where we work</a>
       </div>
       <StatesMap />
     </div>

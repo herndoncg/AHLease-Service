@@ -2,17 +2,17 @@
 import { site } from '../data/site';
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const links = [
-  { href: '/services', label: 'Services' },
-  { href: '/estimators', label: 'Estimators' },
-  { href: '/service-areas', label: 'Service area' },
-  { href: '/about', label: 'About' },
-  { href: '/blog', label: 'Field notes' },
+  { href: '/services/', label: 'Services' },
+  { href: '/estimators/', label: 'Estimators' },
+  { href: '/service-areas/', label: 'Service area' },
+  { href: '/about/', label: 'About' },
+  { href: '/blog/', label: 'Field notes' },
 ];
-const on = (href: string) => path === href || path.startsWith(href + '/');
+const on = (href: string) => { const h = href.replace(/\/$/, ''); return path === h || path.startsWith(h + '/'); };
 ---
 <header class="hdr">
   <div class="wrap hdr__in">
-    <a href="/" class="mark" aria-label="A&H Lease Services, home">
+    <a href="/" class="mark">
       <span class="mark__ah">A&amp;H</span>
       <span class="mark__rule" aria-hidden="true"></span>
       <span class="mark__ls">Lease<br />Services</span>
@@ -22,13 +22,13 @@ const on = (href: string) => path === href || path.startsWith(href + '/');
     </nav>
     <div class="hdr__act">
       <a class="hdr__tel" href={site.phoneHref}>{site.phone}</a>
-      <a class="btn btn--gold hdr__bid" href="/request-a-bid">Request a bid</a>
+      <a class="btn btn--gold hdr__bid" href="/request-a-bid/">Request a bid</a>
     </div>
     <details class="menu">
       <summary aria-label="Menu"><span aria-hidden="true"></span>Menu</summary>
       <nav class="menu__panel" aria-label="Menu">
         {links.map((l) => <a href={l.href} aria-current={on(l.href) ? 'page' : undefined}>{l.label}</a>)}
-        <a href="/request-a-bid">Request a bid</a>
+        <a href="/request-a-bid/">Request a bid</a>
         <a href={site.phoneHref}>Call {site.phone}</a>
       </nav>
     </details>

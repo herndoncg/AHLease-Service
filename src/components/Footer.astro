@@ -20,17 +20,17 @@ const year = new Date().getFullYear();
       {groups.map((g) => (
         <details class="ftr__col" open>
           <summary>{g.name}</summary>
-          <ul>{byGroup(g.key).map((s) => <li><a href={`/services/${s.slug}`}>{s.nav}</a></li>)}</ul>
+          <ul>{byGroup(g.key).map((s) => <li><a href={`/services/${s.slug}/`}>{s.nav}</a></li>)}</ul>
         </details>
       ))}
       <details class="ftr__col" open>
         <summary>Company</summary>
         <ul>
-          <li><a href="/about">About</a></li>
-          <li><a href="/service-areas">Service area</a></li>
-          <li><a href="/estimators">Estimators</a></li>
-          <li><a href="/blog">Field notes</a></li>
-          <li><a href="/request-a-bid">Request a bid</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/service-areas/">Service area</a></li>
+          <li><a href="/estimators/">Estimators</a></li>
+          <li><a href="/blog/">Field notes</a></li>
+          <li><a href="/request-a-bid/">Request a bid</a></li>
           <li><a href={site.sister.url} rel="noopener">{site.sister.name}: paving</a></li>
         </ul>
       </details>
@@ -41,7 +41,7 @@ const year = new Date().getFullYear();
     </blockquote>
     <div class="ftr__base">
       <p>© {year} A&amp;H Lease Services. All rights reserved.</p>
-      <p><a href="/privacy">Privacy</a></p>
+      <p><a href="/privacy/">Privacy</a></p>
     </div>
   </div>
 </footer>

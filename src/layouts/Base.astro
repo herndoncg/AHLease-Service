@@ -15,11 +15,15 @@ interface Props {
   noindex?: boolean;
   /** Home page only: the short opening reveal, shown once per visit. */
   intro?: boolean;
+  /** An image to start loading first (the biggest thing on screen). */
+  preloadImage?: string;
 }
 
-const { title, description: rawDescription, type = 'website', schema = [], noindex = false, intro = false } = Astro.props;
+const { title, description: rawDescription, type = 'website', schema = [], noindex = false, intro = false, preloadImage } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
-const canonical = new URL(path, site.url).href;
+// Every page's address ends with a slash (that is how the host serves them), so the address given to
+// Google matches the sitemap and never points at a redirect.
+const canonical = new URL(path === '/' ? '/' : path + '/', site.url).href;
 // Google shows about 60 characters of a title and 155 of a description.
 const withName = `${title} | A&H Lease Services`;
 const fullTitle = title.includes('A&H') ? title : withName.length < 60 ? withName : `${title} | A&H`;
@@ -44,7 +48,7 @@ const business: Record<string, unknown> = {
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday'], opens: site.hours[0].open, closes: site.hours[0].close },
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: site.hours[1].open, closes: site.hours[1].close },
   ],
-  hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Oilfield lease services', itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name, url: `${site.url}/services/${s.slug}` } })) },
+  hasOfferCatalog: { '@type': 'OfferCatalog', name: 'Oilfield lease services', itemListElement: services.map((s) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: s.name, url: `${site.url}/services/${s.slug}/` } })) },
 };
 ---
 <!doctype html>
@@ -60,6 +64,7 @@ const business: Record<string, unknown> = {
     <meta name="theme-color" content="#073a2c" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content={site.name} />
@@ -112,7 +117,7 @@ const business: Record<string, unknown> = {
     <Footer />
     <nav class="callbar" aria-label="Quick contact">
       <a href={site.phoneHref} class="callbar__call">Call</a>
-      {!onBidPage && <a href="/request-a-bid" class="callbar__bid">Request a bid</a>}
+      {!onBidPage && <a href="/request-a-bid/" class="callbar__bid">Request a bid</a>}
     </nav>
 
     <style is:global>

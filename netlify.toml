@@ -17,9 +17,9 @@
 # The old one-page site used #calculators and "contact". Old links still land somewhere useful.
 [[redirects]]
   from = "/calculators"
-  to = "/estimators"
+  to = "/estimators/"
   status = 301
 [[redirects]]
   from = "/contact"
-  to = "/request-a-bid"
+  to = "/request-a-bid/"
   status = 301

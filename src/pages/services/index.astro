@@ -17,7 +17,7 @@ import { groups, byGroup } from '../../data/services';
         <div class="ghead"><p class="eyebrow">{g.name}</p><h2>{g.line}</h2></div>
         <div class="cards">
           {byGroup(g.key).map((s) => (
-            <a class="card" href={`/services/${s.slug}`}>
+            <a class="card" href={`/services/${s.slug}/`}>
               <h3>{s.name}</h3>
               <p>{s.short}</p>
               <span class="card__go">Details <span aria-hidden="true">→</span></span>

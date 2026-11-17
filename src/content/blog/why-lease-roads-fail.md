@@ -20,4 +20,4 @@ A lease road rarely fails because a truck was too heavy. It fails because water 
 
 Blading a road back to its crown and reopening the ditches before the wet season costs a fraction of rebuilding it afterward. If a road is starting to rut, that is the time to call, while the base under it is still sound.
 
-Want a number for a new road? The [lease road estimator](/estimators#road) gives a price range from the length, width and rock depth.
+Want a number for a new road? The [lease road estimator](/estimators/#road) gives a price range from the length, width and rock depth.
